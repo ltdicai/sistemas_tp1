@@ -16,6 +16,7 @@ class SchedRR : public SchedBase {
 private:
 		int next(int cpu);
 		std::queue<int> cola_task;
+		std::vector<int> tarea_actual_por_cpu;
 		std::vector<int> max_quantum_por_cpu;
 		std::vector<int> actual_quantum_por_cpu;
 };

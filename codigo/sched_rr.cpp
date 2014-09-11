@@ -9,15 +9,15 @@ using namespace std;
 SchedRR::SchedRR(vector<int> argn) {
 	//for(unsigned int i = 0; i < argn.size(); i++) cout << argn[i] << " ";
 	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro
-	//cola_task.push(IDLE_TASK);//Encolamos la tarea IDLE para comenzar
 	max_quantum_por_cpu = vector<int>(argn[0]);//Inicializo el arreglo de quantum por core
 	actual_quantum_por_cpu = vector<int>(argn[0]);//Inicializo el arreglo de quantum actual por core
-	for(int i = 0; i < argn[0]; i++){
+	tarea_actual_por_cpu = vector<int>(argn[0]);//Inicializo el arreglo de tarea actual por core
+
+	for(int i = 0; i < argn[0]; i++){ //uno por cada core
 		max_quantum_por_cpu[i] = argn[i+1];//Cargo los quantum que me pasan por parametro
-		//cout << argn[i+1] << endl;
 		actual_quantum_por_cpu[i] = 0;//Inicializo todo en 0
+		tarea_actual_por_cpu[i] = IDLE_TASK; //al comienzo todas las cpu están corriendo IDLE
 	}
-	cola_task.push(IDLE_TASK);
 }
 
 SchedRR::~SchedRR() {
@@ -25,61 +25,47 @@ SchedRR::~SchedRR() {
 }
 
 void SchedRR::load(int pid) {
-	if(cola_task.size() == 1){//Si hay una sola tarea
-		int tarea = cola_task.front();
-		if(tarea == IDLE_TASK){//Es la tarea IDLE
-			cola_task.pop();//La desencolo
-		}
-	}
 	cola_task.push(pid);//Encolamos la nueva tarea.
 }
 
 void SchedRR::unblock(int pid) {
 	//La tarea termino de hacer IO
-	//this.load(pid);//La 'cargamos' nuevamente
-	if(cola_task.size() == 1){//Si hay una sola tarea
-		int tarea = cola_task.front();
-		if(tarea == IDLE_TASK){//Es la tarea IDLE
-			cola_task.pop();//La desencolo
-		}
-	}
-	cola_task.push(pid);//Encolamos la nueva tarea.
+	cola_task.push(pid);//La encolamos nuevamente
 }
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
-	int pausa;
-	//cin>> pausa;
-	//cout << "//// Quantum del cpu actual: " << actual_quantum_por_cpu[cpu] << endl;
-	//cout << "Nuevo quantum del cpu actual: " << actual_quantum_por_cpu[cpu] << endl;
-	int tarea = cola_task.front();//Veo la tarea que acaba de ejecutarse
-	if(m == TICK){//Es un tick del cpu
-		if(tarea != IDLE_TASK){
-			//cout << "////actual vs max" << actual_quantum_por_cpu[cpu] << " , " << max_quantum_por_cpu[cpu] <<endl;
-			if(actual_quantum_por_cpu[cpu] == max_quantum_por_cpu[cpu]){
-				actual_quantum_por_cpu[cpu] = 0;//Reseteo su quantum
-				cola_task.pop();//Quito a la tarea del tope de la cola
-				cola_task.push(tarea);//La tarea debe ir al fondo de la cola
-			}
+	if(tarea_actual_por_cpu[cpu] == IDLE_TASK){ 
+	//si estoy corriendo IDLE
+		tarea_actual_por_cpu[cpu] = next(cpu); //prox tarea (si no hay tareas esperando es IDLE)
+	}
+	else{
+		if(m == TICK){ 
+		//es un TICK del cpu
 			actual_quantum_por_cpu[cpu]++;//Sumo 1 al quantum del cpu actual
+			if(actual_quantum_por_cpu[cpu] == max_quantum_por_cpu[cpu]){ 
+			//si se le terminó el quantum a la tarea actual
+				cola_task.push(tarea_actual_por_cpu[cpu]); //la encolo 
+				actual_quantum_por_cpu[cpu] = 0; //vuelvo el quantum a cero
+				tarea_actual_por_cpu[cpu] = next(cpu); //prox tarea
+			}
+			///si no se le terminó el quantum a la tarea actual sigue ejecutando
+		}
+		else{
+		//si es un EXIT o un BLOCK para la vista del cpu es lo mismo
+			//no se vuelve a encolar
+			actual_quantum_por_cpu[cpu] = 0; //vuelvo el quantum a cero
+			tarea_actual_por_cpu[cpu] = next(cpu); //prox tarea
 		} 
 	}
-	else if(m == EXIT){
-		//La tarea termino, no vuelve a la cola
-		cola_task.pop();//Quito a la tarea del tope de la cola
-		actual_quantum_por_cpu[cpu] = 0;//Reseteo el quantum del cpu
-		if(cola_task.empty()){//Si ya no hay mas tareas
-			cola_task.push(IDLE_TASK);//Encolamos la tarea IDLE	
-		}
+	return tarea_actual_por_cpu[cpu]; //Devolvemos la siguiente tarea a ejecutar | puede ser: IDLE, prox tarea o actual 
+}
+
+int SchedRR::next(int cpu){
+	int next = IDLE_TASK; //si no hay prox tarea devuelvo IDLE
+
+	if(cola_task.size()>0){ //si hay tareas esperando
+		next = cola_task.front(); //devuelvo la primera de la cola
+		cola_task.pop(); //y la desencolo
 	}
-	else if(m == BLOCK){
-	//La tarea realizo una llamada bloqueante
-	//Debemos sacar la tarea de la cola y 
-	//esperar su unblock donde volvera a ser encolada
-		cola_task.pop();
-		if(cola_task.empty()){ //era la única tarea, debemos ejecutar IDLE
-			cola_task.push(IDLE_TASK);
-		}
-	}
-	
-	return cola_task.front();//Devolvemos la siguiente tarea a ejecutar 
+	return next; 
 }
