@@ -3,7 +3,16 @@
 
 #include <vector>
 #include <queue>
+#include <map>
 #include "basesched.h"
+
+struct TareasCpu {
+	std::queue<int> cola_task;
+	int cantBloqueadas;
+	int tareaActual;
+
+	int cantProcesos();
+};
 
 class SchedRR2 : public SchedBase {
 	public:
@@ -15,6 +24,11 @@ class SchedRR2 : public SchedBase {
 
 	private:
 		int next(int cpu);
+		int cantCpu;
+		std::vector<int> max_quantum_por_cpu;
+		std::vector<int> actual_quantum_por_cpu;
+		std::vector<TareasCpu> tareas_por_cpu;
+		std::map<int,int> tareas_bloqueadas; //map<pid, cpu> for blocked tasks
 };
 
 #endif
