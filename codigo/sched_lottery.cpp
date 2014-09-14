@@ -5,12 +5,17 @@ using namespace std;
 SchedLottery::SchedLottery(vector<int> argn) {
   //suponemos argn[0]=cant_cores; argn[1]=quantum; argn[2]=semilla;
 
-	cout << "la concha de tu madre all boys";
-	cout << argn[0] << " " << argn[1] << " " << argn[2];
+	//cout << "la concha de tu madre all boys";
+	//cout << argn[0] << " " << argn[1] << " " << argn[2];
 	cantCpu = argn[0];
 	quantumMaximo = argn[1];
 	int semilla = argn[2];
 	Task idle = Task(IDLE_TASK, -1);
+
+	//Inicializo los vectores
+	quantumActualDeCpu = vector<int>(cantCpu);
+	tareaActualDeCpu = vector<Task>(cantCpu);
+
 	//inicializo taskList de cores
 	for(int i = 0; i < cantCpu; i++){ //uno por cada core
 		
@@ -32,7 +37,7 @@ void SchedLottery::load(int pid) {
 void SchedLottery::load(int pid,int deadline) {
 	//Llega una tarea
 	//Lo encolo en la lista de tareas
-	cout << endl << deadline << endl;
+	//cout << endl << deadline << endl;
 	int cantTickets;
 	if(deadline == 0){
 		cantTickets = 1;
@@ -51,9 +56,12 @@ void SchedLottery::unblock(int pid) {
 }
 
 int SchedLottery::tick(int cpu, const enum Motivo m) {
+	//cout << "TICK TOC" << endl;
 	if(tareaActualDeCpu[cpu].pid == IDLE_TASK){ 
 	//si estoy corriendo IDLE
+		//cout << green <<"Let's play lottery!" << clearatt << endl;
 		tareaActualDeCpu[cpu] = lottery(); //Hacemos la loteria
+		//cout << "'Bingo!' shouts " << tareaActualDeCpu[cpu].pid << endl;
 	}
 	else{
 		if(m == TICK){
@@ -62,17 +70,21 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			//si se le terminó el quantum a la tarea actual
 				readyTasks.push_back(tareaActualDeCpu[cpu]); //la pongo en ready 
 				quantumActualDeCpu[cpu] = 0; //vuelvo el quantum a cero
+		//		cout << green <<"Let's play lottery!" << clearatt << endl;
 				tareaActualDeCpu[cpu] = lottery(); //Hacemos la loteria
+		//		cout << "'Bingo!' shouts " << tareaActualDeCpu[cpu].pid << endl;
 			}
 			///si no se le terminó el quantum a la tarea actual sigue ejecutando
 		}
 		else{ //BLOCK o EXIT
 			if(m == BLOCK){
 				//Compenso Tickets()
-				tareasBloqueadas.insert(std::pair<int, Task>(tareaActualDeCpu[cpu].pid, tareaActualDeCpu[cpu])); 
+				tareasBloqueadas.insert(pair<int, Task>(tareaActualDeCpu[cpu].pid, tareaActualDeCpu[cpu])); 
 				//guardo <pid, Task> en tareas_bloqueadas
 
 			}
+			//Disminuyo la cantidad de tickets totales
+			totalTickets -= tareaActualDeCpu[cpu].cantTickets;
 			quantumActualDeCpu[cpu] = 0; //vuelvo el quantum a cero
 			tareaActualDeCpu[cpu] = lottery(); //Hacemos la loteria
 		}
@@ -81,12 +93,26 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 }
 
 Task SchedLottery::lottery(){
-	int ticketDorado = floor((rand()/RAND_MAX)*totalTickets + 1); 
-	int sumaTickets = 0;
-	unsigned int it = 0;
-	while(it < readyTasks.size() && sumaTickets < ticketDorado){
-		sumaTickets += readyTasks[it].cantTickets;
-		it++; 
+	if(readyTasks.size() == 0){
+		return Task(IDLE_TASK, -1);
 	}
-	return readyTasks[it];
+	else{
+		double random = (double)rand();
+		random = random/RAND_MAX;
+		random = random*totalTickets + 1;
+		int ticketDorado = floor(random);
+		//cout << "\tThe winning number is " << ticketDorado << endl;
+		int sumaTickets = 0;
+		unsigned int it = 0;
+		//Itero la lista de tareas sumando los tickets
+		//Me detengo uno antes de la ultima tarea, porque
+		//en ese caso ya se que la ultima es la ganadora
+		while(it < readyTasks.size()-1 && sumaTickets < ticketDorado){
+			sumaTickets += readyTasks[it].cantTickets;
+			it++; 
+		}
+		Task nueva = readyTasks[it];
+		readyTasks.erase(readyTasks.begin()+it);
+		return nueva;
+	}
 }

@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <cmath>
 
+#include "iocolors.h"
+
 struct Task
 {
   Task():pid(0),cantTickets(-1){};
@@ -14,6 +16,8 @@ struct Task
 	int pid;
 	int cantTickets;
 };
+
+typedef std::map<int,Task> mapaIntTask;
 
 class SchedLottery : public SchedBase {
   public:
@@ -33,7 +37,7 @@ class SchedLottery : public SchedBase {
   	int quantumMaximo;
   	int totalTickets;
   	int cantCpu;
-    std::map<int,Task> tareasBloqueadas; //map<pid, Task> for blocked tasks
+    mapaIntTask tareasBloqueadas; //map<pid, Task> for blocked tasks
 
     Task lottery();
 
