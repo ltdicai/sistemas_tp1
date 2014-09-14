@@ -13,6 +13,7 @@ SchedLottery::SchedLottery(vector<int> argn) {
 	Task idle = Task(IDLE_TASK, -1);
 
 	//Inicializo los vectores
+	readyTasks = vector<Task>(0);
 	quantumActualDeCpu = vector<int>(cantCpu);
 	tareaActualDeCpu = vector<Task>(cantCpu);
 

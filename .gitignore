@@ -1,2 +1,7 @@
 *.o
 simusched
+*.out
+*.log
+*.toc
+*.*~
+*.aux
