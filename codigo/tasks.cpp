@@ -33,10 +33,13 @@ void TaskBatch(int pid, vector<int> params){ //int total_cpu, int cant_bloqueos
 	int total_cpu = params[0];
 	int cant_bloqueos = params[1];
 	int random_number, nuevo_bloqueo;
+
 	vector<bool> deboBloquear = vector<bool>(total_cpu);
 	for(int i = 0; i < total_cpu; i++) deboBloquear.push_back(false); 
+
 	vector<int> pool = vector<int>(total_cpu);
 	for(int i = 0; i < total_cpu; i++) pool.push_back(i);
+	
 	for(int contador = 0; contador < cant_bloqueos; contador++){
 		random_number = floor(((double)rand()/RAND_MAX)*pool.size());
 		nuevo_bloqueo = pool[random_number];
