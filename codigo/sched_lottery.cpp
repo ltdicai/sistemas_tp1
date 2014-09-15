@@ -79,7 +79,8 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 		}
 		else{ //BLOCK o EXIT
 			if(m == BLOCK){
-				//Compenso Tickets()
+				//Agrego tickets compensatorios por no terminar el quantum
+				compensarTickets(cpu);
 				tareasBloqueadas.insert(pair<int, Task>(tareaActualDeCpu[cpu].pid, tareaActualDeCpu[cpu])); 
 				//guardo <pid, Task> en tareas_bloqueadas
 
@@ -116,4 +117,12 @@ Task SchedLottery::lottery(){
 		readyTasks.erase(readyTasks.begin()+it);
 		return nueva;
 	}
+}
+
+void SchedLottery::compensarTickets(int cpu){
+	int fraccionQuantum = quantumActualDeCpu[cpu]/quantumMaximo;
+	/*si consumio una fracción F del quantum
+	* la compensacion es de 1/F
+	*/
+	tareaActualDeCpu[cpu].cantTickets += floor(1/fraccionQuantum);
 }

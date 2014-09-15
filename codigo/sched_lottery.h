@@ -41,6 +41,8 @@ class SchedLottery : public SchedBase {
 
     Task lottery();
 
+    void compensarTickets(int cpu);
+
 };
 
 #endif
