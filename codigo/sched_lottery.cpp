@@ -38,7 +38,7 @@ void SchedLottery::load(int pid) {
 void SchedLottery::load(int pid,int deadline) {
 	//Llega una tarea
 	//Lo encolo en la lista de tareas
-	//cout << endl << deadline << endl;
+	cout << endl << deadline << endl;
 	int cantTickets;
 	if(deadline == 0){
 		cantTickets = 1;

@@ -1,6 +1,7 @@
 #include "tasks.h"
 #include <time.h>
 #include <stdlib.h>
+#include <cmath>
 
 using namespace std;
 
@@ -28,7 +29,30 @@ void TaskConsola(int pid, vector<int> params){ //int n,int bmin, int bmax
 	}
 }
 
+void TaskBatch(int pid, vector<int> params){ //int total_cpu, int cant_bloqueos
+	int total_cpu = params[0];
+	int cant_bloqueos = params[1];
+	int random_number, nuevo_bloqueo;
+	vector<bool> deboBloquear = vector<bool>(total_cpu);
+	for(int i = 0; i < total_cpu; i++) deboBloquear.push_back(false); 
+	vector<int> pool = vector<int>(total_cpu);
+	for(int i = 0; i < total_cpu; i++) pool.push_back(i);
+	for(int contador = 0; contador < cant_bloqueos; contador++){
+		random_number = floor(((double)rand()/RAND_MAX)*pool.size());
+		nuevo_bloqueo = pool[random_number];
+		deboBloquear[nuevo_bloqueo] = true;
+		pool.erase(pool.begin()+random_number);
+	}
+	for(int i = 0; i < total_cpu; i++){
+		if(deboBloquear[i]){
+			uso_IO(pid, 1);
+		}
+		else{
+			uso_CPU(pid,1);
+		}
+	}
 
+}
 
 void tasks_init(void) {
 	/* Todos los tipos de tareas se deben registrar acá para poder ser usadas.
@@ -38,4 +62,5 @@ void tasks_init(void) {
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
 	register_task(TaskConsola, 3);
+	register_task(TaskBatch, 2);
 }
