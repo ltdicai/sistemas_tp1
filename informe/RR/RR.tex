@@ -1,6 +1,19 @@
 \subsection{Round-Robin (RR)}
-Explicar la política de RR
+RR es un algoritmo de los más viejos, simple, justo y ampliamente usado.\newline
 
+A cada proceso se le asigna un tiempo (quantum) durante el cuál le es permitido correr.
+Si el proceso sigue corriendo al final del quantum, los recursos le son quitados y se le da paso a otro proceso.
+Si el proceso se bloquea, pierde el quantum que le quedaba y los recursos son dados a otro proceso.\newline
+
+Implementar RR es simple, sólo se requiere una lista de procesos 'Ready'.\newline
+Cuando el proceso usa su quantum es puesto al final de la lista. \newline
+Si éste se bloquea, es removido de dicha lista y volverá a ser agregado en cuanto se desbloquee.
+
+En nuestro caso usamos las siguientes estructuras de datos:
+ \begin{description}
+  \item[Cola de procesos 'Ready']{}
+ \end{description}
+ 
 -Explicar la idea y la funcionalidad de c/u de las
 estructuras de datos usadas
 -Hacer pseudocódigo
