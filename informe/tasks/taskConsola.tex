@@ -3,9 +3,9 @@
 \begin{algorithm}
  \caption{TaskConsola}
  \begin{algorithmic}[1]
- \Procedure{TaskConsola}{$n, bmin, bmax$}
-   \State $srand(time(NULL))$ \Comment{seteo semilla de random}
-   \For{$i\gets 0, n$}\Comment{n veces}
+ \Procedure{TaskConsola}{$cant\_ bloqueos, bmin, bmax$}
+   \State{seteo semilla de random}
+   \For{$i\gets 0, cant\_ bloqueos$}
      \State{$random\_ number\gets modulo(rand(),\ bmax - bmin + 1) + bmin$}\Comment{[1]}
      \State{$Uso\_ IO(random\_ number)$}    
    \EndFor
