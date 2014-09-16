@@ -18,6 +18,46 @@ En nuestro caso usamos las siguientes estructuras de datos:
 estructuras de datos usadas
 -Hacer pseudocódigo
 
+\begin{algorithm}
+ \caption{Round-Robin}
+ \begin{algorithmic}[1] 
+ \Procedure{load}{$pid$}
+   \State{encolo la nueva tarea en readyTasks}
+ \EndProcedure
+\newline
+
+ \Procedure{unblock}{$pid$}
+   \State{encolo la tarea desbloqueada en readyTasks}
+ \EndProcedure
+\newline
+
+ \Procedure{tick}{$cpu,\ motivo$}
+   \If{el cpu esta ejecutando IDLE}
+      \State{llamo a NEXT(cpu) para obtener la próxima tarea a ejecutar}
+   \Else
+      \If{el motivo es un TICK}
+	 \State{Actualizo el quantum}
+	 \If{se termino el quantum}
+	    \State{encolo la tarea en readyTasks}
+	    \State{renuevo el quantum}
+	    \State{llamo a NEXT(cpu) para obtener la próxima tarea a ejecutar}
+	 \EndIf	    
+      \ElsIf{el motivo es un BLOCK o un EXIT}
+	  \State{renuevo el quantum}
+	  \State{llamo a NEXT(cpu) para obtener la próxima tarea a ejecutar}	
+      \EndIf
+   \EndIf
+ \EndProcedure
+\newline
+ 
+ \Procedure{next}{$cpu$}
+    \If{hay tareas esperando en readyTasks}
+	\State{retornar la primera de la cola readyTasks y quitarla}
+    \EndIf
+ \EndProcedure
+ \end{algorithmic}
+\end{algorithm}
+
 Para las simulaciones elegimos los siguientes costos:
 \begin{description}
  \item[costo de cambio de contexto = 1 :]{En un CPU real se deben intercambiar estructuras de datos que contienen información de los procesos antes de poder correr la nueva tarea.}

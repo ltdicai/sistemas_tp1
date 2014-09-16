@@ -7,7 +7,7 @@
 #include "basesched.h"
 
 struct TareasCpu {
-	std::queue<int> cola_task;
+	std::queue<int> readyTasks;
 	int cantBloqueadas;
 	int tareaActual;
 
@@ -25,9 +25,9 @@ class SchedRR2 : public SchedBase {
 	private:
 		int next(int cpu);
 		int cantCpu;
-		std::vector<int> max_quantum_por_cpu;
-		std::vector<int> actual_quantum_por_cpu;
-		std::vector<TareasCpu> tareas_por_cpu;
+		std::vector<int> quantumMaximoDeCpu;
+		std::vector<int> quantumActualDeCpu;
+		std::vector<TareasCpu> tareaActualDeCpu;
 		std::map<int,int> tareas_bloqueadas; //map<pid, cpu> for blocked tasks
 };
 
