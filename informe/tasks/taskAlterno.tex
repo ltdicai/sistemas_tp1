@@ -1,0 +1,18 @@
+\subsection{TaskAlterno}
+
+Alterna entre usar el CPU y llamadas bloqueantes.
+
+\begin{algorithm}
+ \caption{TaskAlterno}
+ \begin{algorithmic}[1]
+ \Procedure{TaskAlterno}{$n_{1},n_{2},..,n_{k}$}
+	\For{$i$ $\gets$ [$1$..$k$]}
+		\If{esPar($i$)} \Comment{Alterna entre utilizar el CPU o realizar llamadas bloqueantes.}
+			\State $uso\_CPU(n_{i})$
+		\Else 
+			\State$uso\_IO(n_{i})$ 
+		\EndIf
+	\EndFor
+ \EndProcedure
+ \end{algorithmic}
+\end{algorithm}

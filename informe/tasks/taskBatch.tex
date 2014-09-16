@@ -1,0 +1,21 @@
+\subsection{TaskBatch}
+
+Realiza una cantidad determinada de llamadas bloqueantes en momentos pseudoaleatorios.
+
+\begin{algorithm}
+ \caption{TaskBatch}
+ \begin{algorithmic}[1]
+	\Procedure{TaskBatch}{$total\_cpu, cant\_bloqueos$}
+		\State \textbf{vector<bool>} $bloqueos$ $\gets$ $elegirMomentosParaBloquear(total\_cpu,cant\_bloqueos)$ \Comment{[Nota 2]}
+		\For{$i$ $\gets$ [$1$..$total\_cpu$]}\Comment{n veces}
+			\If{$bloqueos$[$i$] == \textbf{true}}
+				\State $uso\_IO(1)$
+			\Else
+				\State $uso\_CPU(1)$
+			\EndIf
+		\EndFor
+	\EndProcedure
+ \end{algorithmic}
+\end{algorithm}
+
+[Nota 2]: \funcName{elegirMomentosParaBloquear}($n$,$m$) elige $m$ momentos entre [1..$n$] de manera pseudoaleatoria y retornar un vector de $booleanos$ que indicar\'an cu\'ando realizar una llamada bloqueante. 

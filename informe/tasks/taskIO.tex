@@ -1,0 +1,13 @@
+\subsection{TaskIO}
+
+Simula la utilizaci\'on del CPU durante un tiempo y realiza una llamada bloqueante para acceder a un recurso de entrada/salida.
+
+\begin{algorithm}
+ \caption{TaskIO}
+ \begin{algorithmic}[1]
+ \Procedure{TaskIO}{$n,m$}
+   \State $uso\_CPU(n)$ \Comment{Utiliza al CPU durante $n$ ciclos.}
+   \State $uso\_IO(m)$ \Comment{Realiza una llamada bloqueante que durar\'a $m$ ciclos.}
+ \EndProcedure
+ \end{algorithmic}
+\end{algorithm}
