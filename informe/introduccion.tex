@@ -1,4 +1,5 @@
-Una computadora moderna consiste de uno o m\'as procesadores, memoria, discos, impresoras y uno o varios dispositivos de entrada/salida. Adem\'as una computadora ejecuta programas que suelen intentar acceder a estos recursos y generalmente asumiendo que son los \'unicos que desean utilizarlos. Sin embargo esto casi nunca es cierto y suelen haber conflictos cuando dos procesos (programas en ejecuci\'on) acceden al mismo recurso. Para solucionar estas problem\'aticas se recurre a los sistemas operativos, que son aquellos que se encargan de coordinar el acceso a los recursos por parte de los procesos. Un sistema operativo es un proceso superior a todos los dem\'as y decide, siguiendo alguna normativa, en que momentos los procesos comunes se ejecutan. Se conoce a esta normativa como pol\'itica de \emph{scheduling}, y no hay una \'unica manera de definirla. Dependiendo de la situaci\'on puede que se prefiera pol\'iticas que permitan a los procesos mantener ocupado un recurso durante per\'iodos largos de tiempo mientras que otras pol\'iticas se valen en desalojar a las tareas y otorgarle los recursos a otra tarea. Se espera que un \emph{scheduler} trate de cumplir los siguientes objetivos:
+Una computadora moderna consiste de uno o m\'as procesadores, memoria, discos, impresoras y uno o varios dispositivos de entrada/salida. Adem\'as una computadora ejecuta programas que suelen intentar acceder a estos recursos y generalmente asumiendo que son los \'unicos que desean utilizarlos. Sin embargo esto casi nunca es cierto y suelen haber conflictos cuando dos procesos (programas en ejecuci\'on) acceden al mismo recurso. Para solucionar estas problem\'aticas se recurre a los sistemas operativos, que son aquellos que se encargan de coordinar el acceso a los recursos por parte de los procesos. Un sistema operativo es un proceso superior a todos los dem\'as y decide, siguiendo alguna normativa, en que momentos los procesos comunes se ejecutan. Se conoce a esta normativa como pol\'itica de \emph{scheduling}, y no hay una \'unica manera de definirla. Dependiendo de la situaci\'on puede que se prefiera pol\'iticas que permitan a los procesos mantener ocupado un recurso durante per\'iodos largos de tiempo 
+mientras que otras pol\'iticas se valen en desalojar a las tareas y otorgarle los recursos a otra tarea. Se espera que un \emph{scheduler} trate de cumplir los siguientes objetivos:
 
 \begin{itemize}
 	\item Ecuanimidad (\emph{fairness}): que cada proceso reciba una dosis “justa” de CPU (para alguna definici\'on de justicia).
@@ -11,7 +12,8 @@ Una computadora moderna consiste de uno o m\'as procesadores, memoria, discos, i
 	\item Liberaci\'on de recursos: hacer que terminen cuanto antes los procesos que tiene reservados m\'as recursos.
 \end{itemize}
 
-Como se puede intuir, es imposible cumplir todos los objetivos a la vez, por lo tanto las pol\'iticas de \emph{scheduling} tienen sus ventajas y sus desventajas. Es el enfoque de este informe exhibir dichas pol\'iticas, su implementaci\'on en lenguaje \emph{C++} y mostraremos sus pros y sus contras con ejemplos.
+Como se puede intuir, es imposible cumplir todos los objetivos a la vez, por lo tanto las pol\'iticas de \emph{scheduling} tienen sus ventajas y sus desventajas. Es el enfoque de este informe exhibir algunas de las pol\'iticas ms conocidas, su implementaci\'on en lenguaje \emph{C++} y mostraremos sus pros y sus contras con ejemplos y incluiremos gr\'aficos para ayudar a la comprensi\'on.
+
 
 \subsection{Simulador}
 
@@ -22,6 +24,8 @@ Para analizar las diferentes pol\'iticas de \emph{scheduling} utilizamos un mode
 	\item Uno o varios n\'ucleos (\emph{cores}) de procesamiento, que se encargar\'an de hacer los c\'omputos de los procesos.
 	\item Un \'unico dispositivo de entrada y salida que todos los procesos pueden utilizar si lo desean.
 \end{itemize}
+
+Adem\'as contamos con un simulador de ese modelo, que nos permite ejecutar programas o tareas de acuerdo a un $scheduler$ dado. El mismo se encarga de imprimir una secuencia de eventos resultantes de la ejecuci\'on. 
 
 \subsubsection{Acciones del simulador}
 
@@ -39,5 +43,10 @@ Un \emph{scheduler} v\'alido ofrece las siguientes funcionalidades:
 \begin{itemize}
 	\item \funcName{load(pid)}: Carga un proceso con n\'umero de identificaci\'on \funcName{pid}. 
 	\item \funcName{unblock(pid)}: Se realiza cuando un proceso con n\'umero de identificaci\'on \funcName{pid} deja de utilizar un recurso de entrada/salida y desea volver a usar el procesador.
-	\item \funcName{tick(cpu,motivo)}: Se ejecuta por cada $tick$ del reloj del procesador \funcName{cpu} y el \funcName{motivo} indica que sucedi\'o con el \'ultimo proceso que estaba en ejecuci\'on.
+	\item \funcName{tick(cpu,motivo)}: Se ejecuta por cada $tick$ del reloj del procesador \funcName{cpu} y el \funcName{motivo} indica que sucedi\'o con el \'ultimo proceso que estaba en ejecuci\'on. Un \funcName{motivo} puede valer tres cosas:
+		\begin{itemize}
+			\item \funcName{TICK}: indica que el proceso consumi\'o todo el ciclo. 
+			\item \funcName{BLOCK}: indica que el proceso pidi\'o acceso a un recurso de entrada y salida y por este motivo la tarea fue bloqueada.
+			\item \funcName{EXIT}: indica que la tarea termin\'o de ejecutarse.
+		\end{itemize}
 \end{itemize}
