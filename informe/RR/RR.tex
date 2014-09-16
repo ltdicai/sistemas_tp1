@@ -1,0 +1,34 @@
+\subsection{Round-Robin (RR)}
+Explicar la política de RR
+
+-Explicar la idea y la funcionalidad de c/u de las
+estructuras de datos usadas
+-Hacer pseudocódigo
+
+Para las simulaciones elegimos los siguientes costos:
+\begin{description}
+ \item[costo de cambio de contexto = 1 :]{En un CPU real se deben intercambiar estructuras de datos que contienen información de los procesos antes de poder correr la nueva tarea.}
+ \item[costo de migración de núcleo = 2 :]{Se deben intercambiar las mismas estructuras de datos que para el cambio de contexto pero la 'distancia' del caché de un núcleo al de otro es mayor que dentro de sí mismo.}
+\end{description}
+
+!Explicar por qué: 
+-es efectivamente un RR
+-no siempre es mejor tener más núcleos en un RR con lista global
+Esto depende de cuándo entren las tareas, que procesadores
+estaban libres y el quantum de c/u
+
+En estas im todos los cpu tienen quantum = 4
+-Hacer otros experimentos con dif quantums y ver cuál queda mejor
+
+\begin{center}
+ \includegraphics[scale=0.5]{./RR/RR_1cpu.png}
+\end{center}
+
+\begin{center}
+ \includegraphics[scale=0.5]{./RR/RR_2cpu.png}
+\end{center}
+
+\begin{center}
+ \includegraphics[scale=0.5]{./RR/RR_3cpu.png}
+\end{center}
+

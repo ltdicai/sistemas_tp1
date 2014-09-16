@@ -1,30 +1,11 @@
-\subsection{Ej 1: TaskConsola}
-
-\begin{algorithm}
- \caption{TaskConsola}
- \begin{algorithmic}[1]
- \Procedure{TaskConsola}{$n, bmin, bmax$}
-   \State $srand(time(NULL))$ \Comment{seteo semilla de random}
-   \For{$i\gets 0, n$}\Comment{n veces}
-     \State{$random\_ number\gets modulo(rand(),\ bmax - bmin + 1) + bmin$}\Comment{[1]}
-     \State{$Uso\_ IO(random\_ number)$}    
-   \EndFor
- \EndProcedure
- \end{algorithmic}
-\end{algorithm}
-
-[1]: rand() retorna un número arbitrariamente grande.
-Tomando su módulo en (bmax - bmin + 1) nos aseguramos que esté entre 0 y (bmax - bmin).\newline
-Luego sumamos bmin, resultando un número entre bmin y bmax.
-
-\subsection{Ej 2: Ejecutar TaskConsola con FCFS}
+\subsection{First-Come First-Served (FCFS)}
 
 FCFS (First-Come First-Served) un scheduler simple en el cual los procesos son asignados al CPU en el orden en que estos lo requieren.\newline
 
 \begin{wrapfigure}{l}{0.3\textwidth}
   \vspace{-30pt}
   \begin{center}
-    \includegraphics[width=0.25\textwidth]{./ej1y2/ej2_loteTareas.png}
+    \includegraphics[width=0.25\textwidth]{./FCFS/FCFS_loteTareas.png}
   \end{center}
    \vspace{-30pt}
 \end{wrapfigure}
@@ -38,7 +19,7 @@ A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFC
 \textbf{1 Núcleo:}
 \vspace{-20pt}
 \begin{center}
- \includegraphics[scale=0.5]{./ej1y2/ej2_1core.png}
+ \includegraphics[scale=0.5]{./FCFS/FCFS_1core.png}
 \end{center}
 
 \vspace{10pt}
@@ -46,7 +27,7 @@ A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFC
 \textbf{2 Núcleos:}
 \vspace{-20pt}
 \begin{center}
- \includegraphics[scale=0.5]{./ej1y2/ej2_2core.png}
+ \includegraphics[scale=0.5]{./FCFS/FCFS_2core.png}
 \end{center}
 
 \vspace{10pt}
@@ -54,14 +35,14 @@ A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFC
 \textbf{3 Núcleos:}
 \vspace{-20pt}
 \begin{center}
- \includegraphics[scale=0.5]{./ej1y2/ej2_3core.png}
+ \includegraphics[scale=0.5]{./FCFS/FCFS_3core.png}
 \end{center}
 
 
 Obs: Los parámetros de costo de cambio de contexto y migración fueron seteados en 0 ya que en este scheduler en particular
 no son tomados en cuenta. Porque núnca se desalojan las tareas ni se cambian de núcleo.
 
-En los gráficos se hace evidente que a más cántidad de núcleos, mejor rendimiento, con FCFS.
+En los gráficos se hace evidente que a más cántidad de núcleos, mejor rendimiento.
 Esto se debe a que FCFS no soporta múltitarea por sí sólo (ya que núnca desaloja a las tareas), sino que necesita varios núcleos para lograrlo.\newline
 
 Las desventajas de FCFS son varias:

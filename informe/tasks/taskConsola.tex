@@ -1,0 +1,18 @@
+\subsection{TaskConsola}
+
+\begin{algorithm}
+ \caption{TaskConsola}
+ \begin{algorithmic}[1]
+ \Procedure{TaskConsola}{$n, bmin, bmax$}
+   \State $srand(time(NULL))$ \Comment{seteo semilla de random}
+   \For{$i\gets 0, n$}\Comment{n veces}
+     \State{$random\_ number\gets modulo(rand(),\ bmax - bmin + 1) + bmin$}\Comment{[1]}
+     \State{$Uso\_ IO(random\_ number)$}    
+   \EndFor
+ \EndProcedure
+ \end{algorithmic}
+\end{algorithm}
+
+[1]: rand() retorna un número arbitrariamente grande.
+Tomando su módulo en (bmax - bmin + 1) nos aseguramos que esté entre 0 y (bmax - bmin).\newline
+Luego sumamos bmin, resultando un número entre bmin y bmax.
