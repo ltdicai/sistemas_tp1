@@ -13,6 +13,9 @@
  \end{algorithmic}
 \end{algorithm}
 
-[1]: rand() retorna un número arbitrariamente grande.
-Tomando su módulo en (bmax - bmin + 1) nos aseguramos que esté entre 0 y (bmax - bmin).\newline
-Luego sumamos bmin, resultando un número entre bmin y bmax.
+[Nota 1]: \funcName{rand}() retorna un número pseudoaleatorio arbitrariamente entre 0 y $RAND\_MAX$, una constante del lenguaje. Vale entonces que si:
+
+\begin{align*}
+	\funcName{rand}() \in [0..RAND\_MAX]	&\implies \funcName{rand}()\text{ \textbf{m\'od} }(bmax-bmin+1) \in [0..bmax-bmin]\\
+								&\implies \funcName{rand}()\text{ \textbf{m\'od} }(bmax-bmin+1) + bmin \in [bmin..bmax]
+\end{align*}
