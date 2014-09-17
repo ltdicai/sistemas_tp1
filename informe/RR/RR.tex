@@ -13,10 +13,6 @@ En nuestro caso usamos las siguientes estructuras de datos:
  \begin{description}
   \item[Cola de procesos 'Ready']{}
  \end{description}
- 
--Explicar la idea y la funcionalidad de c/u de las
-estructuras de datos usadas
--Hacer pseudocódigo
 
 \begin{algorithm}
  \caption{Round-Robin}
@@ -58,30 +54,28 @@ estructuras de datos usadas
  \end{algorithmic}
 \end{algorithm}
 
-Para las simulaciones elegimos los siguientes costos:
+Para las simulaciones mantuvimos los siguientes costos:
 \begin{description}
  \item[costo de cambio de contexto = 1 :]{En un CPU real se deben intercambiar estructuras de datos que contienen información de los procesos antes de poder correr la nueva tarea.}
  \item[costo de migración de núcleo = 2 :]{Se deben intercambiar las mismas estructuras de datos que para el cambio de contexto pero la 'distancia' del caché de un núcleo al de otro es mayor que dentro de sí mismo.}
 \end{description}
 
-!Explicar por qué: 
--es efectivamente un RR
--no siempre es mejor tener más núcleos en un RR con lista global
-Esto depende de cuándo entren las tareas, que procesadores
-estaban libres y el quantum de c/u
-
-En estas im todos los cpu tienen quantum = 4
--Hacer otros experimentos con dif quantums y ver cuál queda mejor
+Correremos un lote de tareas para verificar que el comportamiento del scheduler es el esperado.
 
 \begin{center}
- \includegraphics[scale=0.5]{./RR/RR_1cpu.png}
+ \includegraphics{./RR/RR_simple.png}
 \end{center}
 
-\begin{center}
- \includegraphics[scale=0.5]{./RR/RR_2cpu.png}
-\end{center}
+Tenemos tres tareas, la segunda realiza llamadas bloqueantes.
+-Se cargan a la cola las tareas 1 y 2. Cola: 1-2
+-Se ejecuta 1, se carga 3 a la cola. Cola: 2-3 (La tarea 1 está corriendo, por lo tanto está fuera de la lista).
+-Se acaba el quantum de 1, vuelve a la lista y se ejecuta el primero de la cola, 2. Cola 3-1
+-La tarea 2 realiza una llamada bloqueante, se ejecuta la siguiente en la cola. Cola: 1
+-Mientras se ejecuta 3, se desbloquea la tarea 2 y vuelve a la lista. Cola: 1-2
+-Se ejecuta 1, termina, y se carga 2. Cola: 3
+-A partir de este momento quedan solamente 2 y 3 que se alternan hasta completar su ejecución.
 
-\begin{center}
- \includegraphics[scale=0.5]{./RR/RR_3cpu.png}
-\end{center}
 
+%Análisis de casos particulares:
+%A continuación presentamos el comportamiento del scheduler para cierto lote de tareas, variando el quantum otorgado.
+%En el primero, consideramos un quantum mínimo, de un ciclo, en el segundo uno de 4, y el último de 11.
