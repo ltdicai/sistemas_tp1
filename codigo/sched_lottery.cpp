@@ -2,11 +2,8 @@
 
 using namespace std;
 
-SchedLottery::SchedLottery(vector<int> argn) {
-  //suponemos argn[0]=cant_cores; argn[1]=quantum; argn[2]=semilla;
+SchedLottery::SchedLottery(vector<int> argn){ //suponemos argn[0]=cant_cores; argn[1]=quantum; argn[2]=semilla;
 
-	//cout << "la concha de tu madre all boys";
-	//cout << argn[0] << " " << argn[1] << " " << argn[2];
 	cantCpu = argn[0];
 	quantumMaximo = argn[1];
 	int semilla = argn[2];

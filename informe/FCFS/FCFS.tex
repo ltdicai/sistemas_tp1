@@ -1,6 +1,6 @@
 \subsection{First-Come First-Served (FCFS)}
 
-FCFS (First-Come First-Served) un scheduler simple en el cual los procesos son asignados al CPU en el orden en que estos lo requieren.\newline
+FCFS (First-Come First-Served) un scheduler simple en el cual los procesos son asignados al CPU en el orden en que estos lo requieren.
 
 \begin{wrapfigure}{l}{0.3\textwidth}
   \vspace{-30pt}
@@ -11,15 +11,15 @@ FCFS (First-Come First-Served) un scheduler simple en el cual los procesos son a
 \end{wrapfigure}
 
 Básicamente hay una sola cola (FIFO) de procesos 'Ready'. 
-Cuando un proceso requiere CPU y éste está libre, se lo deja correr tanto tiempo como quiera y sin interrupciones.\newline
+Cuando un proceso requiere CPU y éste está libre, se lo deja correr tanto tiempo como quiera y sin interrupciones.
 
-A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFCFS para el lote de tareas del cuadro.\newline
+A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFCFS para el lote de tareas del cuadro.
 
 \vspace{10pt}
 \textbf{1 Núcleo:}
 \vspace{-20pt}
 \begin{center}
- \includegraphics[scale=0.5]{./FCFS/FCFS_1core.png}
+ \includegraphics[scale=0.45]{./FCFS/FCFS_1core.png}
 \end{center}
 
 \vspace{10pt}
@@ -27,7 +27,7 @@ A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFC
 \textbf{2 Núcleos:}
 \vspace{-20pt}
 \begin{center}
- \includegraphics[scale=0.5]{./FCFS/FCFS_2core.png}
+ \includegraphics[scale=0.45]{./FCFS/FCFS_2core.png}
 \end{center}
 
 \vspace{10pt}
@@ -35,7 +35,7 @@ A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFC
 \textbf{3 Núcleos:}
 \vspace{-20pt}
 \begin{center}
- \includegraphics[scale=0.5]{./FCFS/FCFS_3core.png}
+ \includegraphics[scale=0.45]{./FCFS/FCFS_3core.png}
 \end{center}
 
 
@@ -43,13 +43,13 @@ Obs: Los parámetros de costo de cambio de contexto y migración fueron seteados
 no son tomados en cuenta. Porque núnca se desalojan las tareas ni se cambian de núcleo.
 
 En los gráficos se hace evidente que a más cántidad de núcleos, mejor rendimiento.
-Esto se debe a que FCFS no soporta múltitarea por sí sólo (ya que núnca desaloja a las tareas), sino que necesita varios núcleos para lograrlo.\newline
+Esto se debe a que FCFS no soporta múltitarea por sí sólo (ya que núnca desaloja a las tareas), sino que necesita varios núcleos para lograrlo.
 
 Las desventajas de FCFS son varias:
 
 \begin{itemize}
 \item Como ya dijimos, no soporta múltitarea.
-\item Puede generar mucho 'waiting time'.\newline
+\item Puede generar mucho 'waiting time'.
 	Si está ejecutando tareas muy largas las nuevas no entran hasta que éstas terminen.
 \item No tiene buen rendimiento, a menos que se sepa la duración de las tareas de antemano.
 \item Carece de 'fairness' i.e. no distribuye el/los procesador/es de forma justa entre las tareas.

@@ -1,12 +1,12 @@
 \subsection{Round-Robin (RR)}
-RR es un algoritmo de los más viejos, simple, justo y ampliamente usado.\newline
+RR es un algoritmo de los más viejos, simple, justo y ampliamente usado.
 
 A cada proceso se le asigna un tiempo (quantum) durante el cuál le es permitido correr.
 Si el proceso sigue corriendo al final del quantum, los recursos le son quitados y se le da paso a otro proceso.
-Si el proceso se bloquea, pierde el quantum que le quedaba y los recursos son dados a otro proceso.\newline
+Si el proceso se bloquea, pierde el quantum que le quedaba y los recursos son dados a otro proceso.
 
-Implementar RR es simple, sólo se requiere una lista de procesos 'Ready'.\newline
-Cuando el proceso usa su quantum es puesto al final de la lista. \newline
+Implementar RR es simple, sólo se requiere una lista de procesos 'Ready'.
+Cuando el proceso usa su quantum es puesto al final de la lista. 
 Si éste se bloquea, es removido de dicha lista y volverá a ser agregado en cuanto se desbloquee.
 
 En nuestro caso usamos las siguientes estructuras de datos:
@@ -20,12 +20,12 @@ En nuestro caso usamos las siguientes estructuras de datos:
  \Procedure{load}{$pid$}
    \State{encolo la nueva tarea en readyTasks}
  \EndProcedure
-\newline
+
 
  \Procedure{unblock}{$pid$}
    \State{encolo la tarea desbloqueada en readyTasks}
  \EndProcedure
-\newline
+
 
  \Procedure{tick}{$cpu,\ motivo$}
    \If{el cpu esta ejecutando IDLE}
@@ -44,7 +44,7 @@ En nuestro caso usamos las siguientes estructuras de datos:
       \EndIf
    \EndIf
  \EndProcedure
-\newline
+
  
  \Procedure{next}{$cpu$}
     \If{hay tareas esperando en readyTasks}
@@ -63,7 +63,7 @@ Para las simulaciones mantuvimos los siguientes costos:
 Correremos un lote de tareas para verificar que el comportamiento del scheduler es el esperado.
 
 \begin{center}
- \includegraphics{./RR/RR_simple.png}
+ \includegraphics[scale=0.48]{./RR/RR_simple.png}
 \end{center}
 
 Tenemos tres tareas, la segunda realiza llamadas bloqueantes.
