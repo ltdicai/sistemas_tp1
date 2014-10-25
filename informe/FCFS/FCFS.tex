@@ -39,8 +39,8 @@ A continuación se muestran los gráficos para 1, 2 y 3 núcleos, usando SchedFC
 \end{center}
 
 
-Obs: Los parámetros de costo de cambio de contexto y migración fueron seteados en 0 ya que en este scheduler en particular
-no son tomados en cuenta. Porque núnca se desalojan las tareas ni se cambian de núcleo.
+Obs: Los parámetros de costo de cambio de contexto y migración fueron seteados en 0 ya que son irrelevantes para este scheduller. 
+Porque nunca se desalojan las tareas ni se cambian de núcleo. Sólo serían usados por el simulador al momento de cargar un proceso por primera vez
 
 En los gráficos se hace evidente que a más cántidad de núcleos, mejor rendimiento.
 Esto se debe a que FCFS no soporta múltitarea por sí sólo (ya que núnca desaloja a las tareas), sino que necesita varios núcleos para lograrlo.

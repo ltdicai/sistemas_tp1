@@ -49,6 +49,8 @@ En nuestro caso usamos las siguientes estructuras de datos:
  \Procedure{next}{$cpu$}
     \If{hay tareas esperando en readyTasks}
 	\State{retornar la primera de la cola readyTasks y quitarla}
+    \Else
+	\State{retornar IDLE}
     \EndIf
  \EndProcedure
  \end{algorithmic}
@@ -60,22 +62,38 @@ Para las simulaciones mantuvimos los siguientes costos:
  \item[costo de migración de núcleo = 2 :]{Se deben intercambiar las mismas estructuras de datos que para el cambio de contexto pero la 'distancia' del caché de un núcleo al de otro es mayor que dentro de sí mismo.}
 \end{description}
 
-Correremos un lote de tareas para verificar que el comportamiento del scheduler es el esperado.
+Correremos un par de lotes de tareas para verificar que el comportamiento del scheduler es el esperado.
 
 \begin{center}
  \includegraphics[scale=0.48]{./RR/RR_simple.png}
 \end{center}
 
-Tenemos tres tareas, la segunda realiza llamadas bloqueantes.
--Se cargan a la cola las tareas 1 y 2. Cola: 1-2
--Se ejecuta 1, se carga 3 a la cola. Cola: 2-3 (La tarea 1 está corriendo, por lo tanto está fuera de la lista).
--Se acaba el quantum de 1, vuelve a la lista y se ejecuta el primero de la cola, 2. Cola 3-1
--La tarea 2 realiza una llamada bloqueante, se ejecuta la siguiente en la cola. Cola: 1
--Mientras se ejecuta 3, se desbloquea la tarea 2 y vuelve a la lista. Cola: 1-2
--Se ejecuta 1, termina, y se carga 2. Cola: 3
--A partir de este momento quedan solamente 2 y 3 que se alternan hasta completar su ejecución.
+Se puede observar que no es un algoritmo FCFS porque, en principio, hace desalojo de tareas cada cierto quantum.
+Además las tareas que se bloquean son desalojadas de inmediato, sin encolarlas en ReadyTasks hasta que se desbloqueen.
 
+\begin{center}
+ \includegraphics[scale=0.48]{./RR/RR_example_2.png}
+\end{center}
 
-%Análisis de casos particulares:
-%A continuación presentamos el comportamiento del scheduler para cierto lote de tareas, variando el quantum otorgado.
-%En el primero, consideramos un quantum mínimo, de un ciclo, en el segundo uno de 4, y el último de 11.
+Se puede ver que el proceso 0 es desalojado en cuanto se bloquea, cediendo el procesador al
+proceso 1 (siguiente en la cola de ReadyTasks).\\
+En cuanto el proceso 1 termina su quantum es desalojado (y movido al final de la cola de ReadyTasks).
+Y se deja correr el proceso 2.\\
+
+Entre los ciclos 14 y 15, la cola de ReadyTasks tiene la siguiente forma:\\
+[3, 2, 0, 1].\\
+Ya que el proceso 0 fue desencolado en cuanto se bloqueó, y vuelto a encolar en el
+ciclo 11 (cuando se desbloquea), antes de que termine el quantum del proceso 1.\\
+
+Veamos ahora un ejemplo de una mala elección de quantum para un entorno donde el
+costo de cambio de contexto es elevado.
+
+\begin{center}
+ \includegraphics[scale=0.48]{./RR/RR_example_3.png}
+\end{center}
+
+Como se puede observar, tarda 106 ciclos en completar la ejecución del lote de tareas.
+A diferencia del anterior (que tardaba 63 ciclos).
+
+Esto se debe a que el procesador está más tiempo haciendo tareas de mantenimiento (cambio de contexto)
+que efectivamente ejecutando procesos.
