@@ -36,13 +36,7 @@ void SchedLottery::load(int pid,int deadline) {
 	//Llega una tarea
 	//Lo encolo en la lista de tareas
 	cout << endl << deadline << endl;
-	int cantTickets;
-	if(deadline == 0){
-		cantTickets = 1;
-	}
-	else{
-		cantTickets = floor(10/deadline) + 1; //La cantidad de tickets otorgados es proporcional al deadline 
-	}
+	int cantTickets = 1;
 	totalTickets += cantTickets; //Aumento la cantidad de tickets
 	Task nuevaTarea = Task(pid,cantTickets);//Creo nueva tarea
 	readyTasks.push_back(nuevaTarea); //Inserto nueva tarea a la lista de tareas por ejecutar
@@ -50,6 +44,10 @@ void SchedLottery::load(int pid,int deadline) {
 
 void SchedLottery::unblock(int pid) {
 	Task desbloqueada = tareasBloqueadas[pid];
+	desbloqueada.cantTickets++; //compensation ticket
+	
+	totalTickets += desbloqueada.cantTickets;
+
 	readyTasks.push_back(desbloqueada);
 }
 
