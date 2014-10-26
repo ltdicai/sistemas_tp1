@@ -35,7 +35,6 @@ void SchedLottery::load(int pid) {
 void SchedLottery::load(int pid,int deadline) {
 	//Llega una tarea
 	//Lo encolo en la lista de tareas
-	cout << endl << deadline << endl;
 	int cantTickets = 1;
 	totalTickets += cantTickets; //Aumento la cantidad de tickets
 	Task nuevaTarea = Task(pid,cantTickets);//Creo nueva tarea
@@ -44,8 +43,7 @@ void SchedLottery::load(int pid,int deadline) {
 
 void SchedLottery::unblock(int pid) {
 	Task desbloqueada = tareasBloqueadas[pid];
-	desbloqueada.cantTickets++; //compensation ticket
-	
+	tareasBloqueadas.erase(pid);
 	totalTickets += desbloqueada.cantTickets;
 
 	readyTasks.push_back(desbloqueada);
@@ -95,8 +93,8 @@ Task SchedLottery::lottery(){
 	}
 	else{
 		double random = (double)rand();
-		random = random/RAND_MAX;
-		random = random*totalTickets + 1;
+		random = random/RAND_MAX; //ahora random = numero entre 0 y 1
+		random = random*totalTickets;
 		int ticketDorado = floor(random);
 		//cout << "\tThe winning number is " << ticketDorado << endl;
 		int sumaTickets = 0;
@@ -115,7 +113,7 @@ Task SchedLottery::lottery(){
 }
 
 void SchedLottery::compensarTickets(int cpu){
-	int fraccionQuantum = quantumActualDeCpu[cpu]/quantumMaximo;
+	double fraccionQuantum = quantumActualDeCpu[cpu]/quantumMaximo;
 	/*si consumio una fracción F del quantum
 	* la compensacion es de 1/F
 	*/
