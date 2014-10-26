@@ -12,6 +12,11 @@ struct TareasCpu {
 	int tareaActual;
 
 	int cantProcesos();
+
+	TareasCpu(){
+		cantBloqueadas = 0;
+		tareaActual = IDLE_TASK;
+	}
 };
 
 class SchedRR2 : public SchedBase {

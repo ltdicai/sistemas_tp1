@@ -25,7 +25,7 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 }
 
 void TaskConsola(int pid, vector<int> params){ //int n,int bmin, int bmax
-	srand(time(NULL)); //Inicializo RNG
+	//srand(time(NULL)); //Inicializo RNG
 	for(int i = 0; i < params[0]; ++i){
 		int random_number = rand() % (params[2]-params[1]+1) + params[1];//Genero numero random entre bmin y bmax
 		uso_IO(pid, random_number); //Llamada bloqueante de 'random_number' ciclos 	
