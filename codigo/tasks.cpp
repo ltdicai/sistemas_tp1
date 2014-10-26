@@ -2,8 +2,11 @@
 #include <time.h>
 #include <stdlib.h>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
+
+int global = 0;
 
 void TaskCPU(int pid, vector<int> params) { // params: n
 	uso_CPU(pid, params[0]); // Uso el CPU n milisegundos.
@@ -30,31 +33,48 @@ void TaskConsola(int pid, vector<int> params){ //int n,int bmin, int bmax
 }
 
 void TaskBatch(int pid, vector<int> params){ //int total_cpu, int cant_bloqueos
-	int total_cpu = params[0];
+	int total_cpu = params[0]; 
 	int cant_bloqueos = params[1];
-	int random_number, nuevo_bloqueo;
 
-	vector<bool> deboBloquear = vector<bool>(total_cpu);
+	int random_number, nuevo_bloqueo;
+	double aux;
+
+	//Inicizalizamos vector de flags que indiquen si la tarea se bloqueará o no
+	vector<bool> deboBloquear = vector<bool>();
 	for(int i = 0; i < total_cpu; i++) deboBloquear.push_back(false); 
 
-	vector<int> pool = vector<int>(total_cpu);
+	//Inicializamos el pool de donde extraer momentos
+	vector<int> pool = vector<int>();
 	for(int i = 0; i < total_cpu; i++) pool.push_back(i);
-	
+
+	//Elegimos pseudoaleatoriamente cant_bloqueos momentos en los cuales bloquear
 	for(int contador = 0; contador < cant_bloqueos; contador++){
-		random_number = floor(((double)rand()/RAND_MAX)*pool.size());
-		nuevo_bloqueo = pool[random_number];
+		//Calculamos una posicion aleatoria del pool de momentos.
+		aux = ((double)rand()/RAND_MAX)*pool.size();
+		random_number = floor(aux);
+
+		nuevo_bloqueo = pool[random_number]; // La tarea se bloqueará en el tick nuevo_bloqueo
+		//Marcamos que la tarea debe bloquearse en el tick nuevo_bloqueo
 		deboBloquear[nuevo_bloqueo] = true;
+		//Eliminamos el nuevo_bloqueo del pool de momentos, ya que no lo
+		// debemos elegir nuevamente
 		pool.erase(pool.begin()+random_number);
 	}
+	//Ciclo principal de la tarea
 	for(int i = 0; i < total_cpu; i++){
 		if(deboBloquear[i]){
+			//Hacemos una llamada bloqueante de 1 ciclo
+			// Esto consume en total 2 ciclos (1 por la llamada, otro por
+			// el bloqueo en si)
 			uso_IO(pid, 1);
 		}
 		else{
-			uso_CPU(pid,1);
+			//Utilizamos el cpu durante un ciclo.
+			uso_CPU(pid, 1);
 		}
 	}
-
+	//Se consume un ciclo mas por el exit
+	//Tiempo total = 1*total_cpu + 1*cant_bloqueos + 1*exit
 }
 
 void tasks_init(void) {
