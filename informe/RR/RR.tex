@@ -9,10 +9,9 @@ Implementar RR es simple, sólo se requiere una lista de procesos 'Ready'.
 Cuando el proceso usa su quantum es puesto al final de la lista. 
 Si éste se bloquea, es removido de dicha lista y volverá a ser agregado en cuanto se desbloquee.
 
-En nuestro caso usamos las siguientes estructuras de datos:
- \begin{description}
-  \item[Cola de procesos 'Ready']{}
- \end{description}
+\subsubsection{Código}
+
+En nuestro caso usamos una cola de procesos llamada 'readyTasks'.
 
 \begin{algorithm}
  \caption{Round-Robin}
@@ -55,6 +54,8 @@ En nuestro caso usamos las siguientes estructuras de datos:
  \EndProcedure
  \end{algorithmic}
 \end{algorithm}
+
+\subsubsection{Simulaciones y análisis}
 
 Para las simulaciones mantuvimos los siguientes costos:
 \begin{description}
