@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+
+\bibitem{Tanen}
+Andrew~S. Tanenbaum.
+\newblock {\em Modern Operating Systems}.
+\newblock Pearson, 4th edition, 2013.
+
+\bibitem{SchedLottery}
+Carl~A. Waldspurger and William~E. Weihl.
+\newblock Lottery scheduling: Flexible proportional-share resource management.
+\newblock {\em The 1994 Operating Systems Design and Implementation conference
+  (OSDI '94)}, 1994.
+\newblock
+  \url{https://www.usenix.org/legacy/publications/library/proceedings/osdi/ful%
+l_papers/waldspurger.pdf}.
+
+\end{thebibliography}
