@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 
 class Task(object):
@@ -76,8 +77,8 @@ def main(argv):
 			if tasks[task].blocked:
 				 tasks[task].blocked = False
 				 tasks[task].response(cycle)
-			if task != -1:
-				tasks[task].cpu_time += 1
+			#if task != -1:
+			tasks[task].cpu_time += 1
 
 		elif command == "BLOCK":
 			# En el ciclo cycle la tarea task esta bloqueada
@@ -106,16 +107,25 @@ def main(argv):
 			pass
 		#	sys.stderr.write("Skip line {} '{}'".format(line_n, line))
 
-	
+	print "Total CPU time:", last_exit
+	total_cpu = float(last_exit)
 	for oid, value in tasks.iteritems():
 		taskname = oid
 		if taskname == -1:
 			taskname = "Idle"
 		print "Task {}:".format(taskname)
 		print "\tTime CPU: {}".format(value.cpu_time)
+
+		print "\tTime CPU(%): {}".format(100*(value.cpu_time/total_cpu))
 		print "\tTurn-around: {}".format(value.running_time)
 		print "\tTime IO: {}".format(value.blocked_list)
 		print "\tResponse times: {}".format(value.response_times)
+		if value.response_times:
+			response_time_avg = sum(value.response_times)/float(len(value.response_times))
+		else:
+			response_time_avg = -1
+		print "\tResponse times(AVG): {}".format(response_time_avg)
+
 		
 
 	fin.close()
