@@ -1,6 +1,8 @@
 \subsection{Métricas}
 
-Para observar el comportamiento de los algoritmos de $scheduling$ no basta con hacer un gráfico, también hay que poder extraer información de él y así realizar un análisis del rendimiento de algoritmo. Esa informaci\'on tiene que poder ser cuatificable, ya que si lo fuese podr\'iamos utilizar esta informaci\'on para comparar varios algoritmos y decidir cu\'al es el m\'as conveniente seg\'un un conjunto determinado de procesos. Por ello recurrimos al uso de m\'etricas, para poder obtener n\'umeros a partir de una corrida determinada de un algoritmo de $scheduling$. Las m\'etricas nos permitir\'an decidir si el algoritmo est\'a aportando a cumplir algunos de los objetivos indicados anteriormente en la introducci\'on. Tanembaum\cite{Tanen} propone una divisi\'on entre el tipo de tareas posibles, en base a sus caracter\'isticas, a saber:
+Para observar el comportamiento de los algoritmos de $scheduling$ no basta con hacer un gráfico, también hay que poder extraer información de él y así realizar un análisis del rendimiento del algoritmo. Esa informaci\'on tiene que poder ser cuantificable, ya que si lo fuese podr\'iamos utilizar esta informaci\'on para comparar varios algoritmos y decidir cu\'al es el m\'as conveniente seg\'un un conjunto determinado de procesos. 
+
+Por ello recurrimos al uso de m\'etricas, para poder obtener n\'umeros a partir de una corrida determinada de un algoritmo de $scheduling$. Las m\'etricas nos permitir\'an decidir si el algoritmo est\'a aportando a cumplir algunos de los objetivos indicados anteriormente en la introducci\'on. Tanembaum\cite{Tanen} propone una divisi\'on entre el tipo de tareas posibles, en base a sus caracter\'isticas, a saber:\\
 
 Tipos de tareas:
 \begin{itemize}
@@ -8,13 +10,14 @@ Tipos de tareas:
 	\item $Interactive$ o interactivos, que particularmente usan mucho los dispositivos de entrada y salida.  
 \end{itemize}
 
-Los conjuntos de tareas que utilizamos para probar los algoritmos de $scheduling$ en el simulador generalmente poseen ambos tipos de tareas, as\'i que haremos un an\'alisis bastante general cu\'ales m\'etricas aplicar.
+Los conjuntos de tareas que utilizamos para probar los algoritmos de $scheduling$ en el simulador generalmente poseen ambos tipos de tareas, as\'i que haremos un an\'alisis bastante general de cu\'ales m\'etricas aplicar.
 
 Nos parece de principal inter\'es analizar las siguientes m\'etricas.
 
 \subsubsection{Turn-around time}
 
-$Turn-around$ $time$($TAT$) se define como el tiempo que tarda un proceso en terminar desde que est\'a listo para ejecutarse. Si un proceso se ejecuta desde el principio, entonces el n\'umero coinicide con tiempo total que tard\'o en terminar. Notemos que este tiempo no puede ser menor al tiempo total de ejecuci\'on; no tiene sentido que una tarea termine antes de ejecutar todo lo que deb\'ia ejecutar. Podemos medir entonces el $turn-around$ $time$  %%%%%%       Analicemos el $turn-around$ $time$ para los distintos algoritmos de $scheduling$ vistos:
+$Turn-around$ $time$ se define como el tiempo que tarda un proceso en terminar desde que est\'a listo para ejecutarse. Si un proceso se ejecuta desde el principio, entonces el n\'umero coinicide con tiempo total que tard\'o en terminar. Notemos que este tiempo no puede ser menor al tiempo total de ejecuci\'on; no tiene sentido que una tarea termine antes de ejecutar todo lo que deb\'ia ejecutar. Podemos medir entonces el $turn-around$ $time$.\\
+Analicemos el $turn-around$ $time$ para los distintos algoritmos de $scheduling$ vistos:
 
 \paragraph{FCFS}
 

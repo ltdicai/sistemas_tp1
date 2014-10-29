@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sys
 
 class Task(object):
@@ -57,18 +56,32 @@ def main(argv):
 
 	tasks = {-1:Task(0)}
 	line_n = 0
-	last_exit = 0;
+	last_exit = 0
+	totalTasks = {-1:Task(0)}
+	simuTotal=0
 	for line in fin:
 		line_n += 1
 		words = line.split()
 		# Extraer primera palabra
 		command = words.pop(0) 
 		if command == "#":
-			pass
+			if words[0] == "SETTINGS":
+				simuTotal += 1
+				for oid, value in tasks.iteritems():
+					#cpu time
+					totalTasks[oid].cpu_time += value.cpu_time
+					#turn around
+					totalTasks[oid].running_time += value.running_time
+					#time IO
+					totalTasks[oid].blocked_list += value.blocked_list
+					#Response time
+					totalTasks[oid].response_times += value.response_times
 		elif command == "LOAD":
 			# Cargo nueva tarea
 			cycle = int(words[0]) 
 			task = int(words[1])
+			if task not in totalTasks:
+				totalTasks[task] = Task(cycle);
 			tasks[task] = Task(cycle)
 		elif command == "CPU":
 			# En el ciclo cycle se ejecuta la tarea task
@@ -77,8 +90,8 @@ def main(argv):
 			if tasks[task].blocked:
 				 tasks[task].blocked = False
 				 tasks[task].response(cycle)
-			#if task != -1:
-			tasks[task].cpu_time += 1
+			if task != -1:
+				tasks[task].cpu_time += 1
 
 		elif command == "BLOCK":
 			# En el ciclo cycle la tarea task esta bloqueada
@@ -106,29 +119,33 @@ def main(argv):
 		else:
 			pass
 		#	sys.stderr.write("Skip line {} '{}'".format(line_n, line))
-
-	print "Total CPU time:", last_exit
-	total_cpu = float(last_exit)
-	for oid, value in tasks.iteritems():
-		taskname = oid
-		if taskname == -1:
-			taskname = "Idle"
-		print "Task {}:".format(taskname)
-		print "\tTime CPU: {}".format(value.cpu_time)
-
-		print "\tTime CPU(%): {}".format(100*(value.cpu_time/total_cpu))
-		print "\tTurn-around: {}".format(value.running_time)
-		print "\tTime IO: {}".format(value.blocked_list)
-		print "\tResponse times: {}".format(value.response_times)
-		if value.response_times:
-			response_time_avg = sum(value.response_times)/float(len(value.response_times))
-		else:
-			response_time_avg = -1
-		print "\tResponse times(AVG): {}".format(response_time_avg)
-
 		
 
 	fin.close()
+
+	for key, value in totalTasks.iteritems():
+		if key != -1:
+			#tourn-around
+			value.running_time = float(value.running_time) / simuTotal
+			#cpu time
+			value.cpu_time = float(value.cpu_time) / simuTotal
+			#time IO
+			meanTimeIO = 0
+			for timeIO in value.blocked_list:
+				meanTimeIO += timeIO
+			if len(value.blocked_list) !=0:
+				meanTimeIO = float(meanTimeIO) / len(value.blocked_list)
+			#response time
+			meanResponseTime = 0
+			for responseTime in value.response_times:
+				meanResponseTime += responseTime
+			if len(value.response_times) !=0:
+				meanResponseTime = float(meanResponseTime) / len(value.response_times)
+			print "Task {}: ".format(key)
+			print "mean Tourn-around: {}".format(value.running_time)
+			print "mean CPU time: {}".format(value.cpu_time)
+			print "mean time IO: {}".format(meanTimeIO)
+			print "mean response time: {}".format(meanResponseTime) + "\n"
 
 
 	fout.write("\n")
@@ -137,3 +154,6 @@ def main(argv):
 
 if __name__ == "__main__":
 	main(sys.argv)
+
+#BASH PARA EJECUTAR MUCHAS VECES SIMUSCHED
+#for semilla in $(seq 1 100); do ./simusched lote_ej10_1.tsk 1 1 2 SchedLottery 3 $semilla >> output.txt; done

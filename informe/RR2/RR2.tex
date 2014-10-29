@@ -12,7 +12,7 @@ Esta variante, como todo algoritmo de schedulling, tiene sus pros y sus contras.
 Para simplificar las explicaciones y los gráficos tomamos ejemplos de 
 dos núcleos, aunque esto puede ser expandido a más de dos.\\
 
-\textbf{Contra - caso: Sobrecarga de un núcleo}\\
+\subsubsection{Contra. Caso: Sobrecarga de un núcleo}
 Una contra es que uno de los núcleos puede quedar 'sobrecargado' mientras el
 otro no tiene ningún proceso asignado (está corriendo IDLE).
 
@@ -45,7 +45,7 @@ En el ciclo 25 los procesos cortos son finalizados quedando el núcleo 0 con tre
 Este escenario también se podría dar si en vez de tareas cortas tenemos tareas que realizan llamadas bloqueantes.
 Entonces en el núcleo 0 hay tareas usando CPU y el núcleo 1 queda esperando que algún proceso se desbloquee.\\
 
-\textbf{Pro - caso: Migración costosa}\\
+\subsubsection{Pro. Caso: Migración costosa}
 Una de las ventajas de RR2 queda expuesta si el costo de la migración es grande.
 Si los procesos cambian mucho entre núcleos puede que en el caso de RR 
 el procesador pase más tiempo haciendo tareas de mantenimiento que efectivamente corriendo procesos.\\
