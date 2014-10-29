@@ -1,0 +1,7 @@
+TaskCPU 20
+TaskIO 7 4
+@5:
+TaskBatch 5 5
+TaskConsola 4 2 5
+@8:
+TaskCPU 6

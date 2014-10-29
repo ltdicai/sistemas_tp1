@@ -1,0 +1,11 @@
+Task 0: 
+mean Tourn-around: 51.13
+mean CPU time: 35.64
+mean time IO: 0
+mean response time: 0
+
+Task 1: 
+mean Tourn-around: 50.41
+mean CPU time: 5.94
+mean time IO: 3.45252525253
+mean response time: 8.13333333333
