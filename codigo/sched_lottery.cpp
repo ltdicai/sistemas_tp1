@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define CANT_TICKETS_INICIAL 10  
+
 SchedLottery::SchedLottery(vector<int> argn){ //suponemos argn[0]=cant_cores; argn[1]=quantum; argn[2]=semilla;
 
 	cantCpu = argn[0];
@@ -35,7 +37,7 @@ void SchedLottery::load(int pid) {
 void SchedLottery::load(int pid,int deadline) {
 	//Llega una tarea
 	//Lo encolo en la lista de tareas
-	int cantTickets = 1;
+	int cantTickets = CANT_TICKETS_INICIAL;
 	totalTickets += cantTickets; //Aumento la cantidad de tickets
 	Task nuevaTarea = Task(pid,cantTickets);//Creo nueva tarea
 	readyTasks.push_back(nuevaTarea); //Inserto nueva tarea a la lista de tareas por ejecutar
@@ -55,7 +57,6 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 	//si estoy corriendo IDLE
 		//cout << green <<"Let's play lottery!" << clearatt << endl;
 		tareaActualDeCpu[cpu] = lottery(); //Hacemos la loteria
-		//cout << "'Bingo!' shouts " << tareaActualDeCpu[cpu].pid << endl;
 	}
 	else{
 		if(m == TICK){
@@ -108,6 +109,7 @@ Task SchedLottery::lottery(){
 		}
 		Task nueva = readyTasks[it];
 		readyTasks.erase(readyTasks.begin()+it);
+		cout << "# WINNER " << nueva.pid << endl;
 		return nueva;
 	}
 }
@@ -117,5 +119,5 @@ void SchedLottery::compensarTickets(int cpu){
 	/*si consumio una fracción F del quantum
 	* la compensacion es de 1/F
 	*/
-	tareaActualDeCpu[cpu].cantTickets += floor(1/fraccionQuantum);
+	tareaActualDeCpu[cpu].cantTickets += floor(CANT_TICKETS_INICIAL/fraccionQuantum);
 }

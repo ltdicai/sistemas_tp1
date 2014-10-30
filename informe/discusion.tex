@@ -28,36 +28,72 @@ $Fairness$ o equanimidad es una métrica que permite analizar cuán justo es el 
 
 El algoritmo de $Round-Robin$ implementa el sistema de $quantum$ para poder responder a la necesidad de que los procesos reciban un porcentaje similar del procesador. Nuestra intuición es que los resultados determinarán un algoritmo $fair$ o ecúanime, veamos unos casos de prueba.
 
-n = 1, 3 valores de quantum = 1,4,6
-n = 2 quantum = 1,3,5,8
-n = 4 quantum 2,4,6
+El lote de tareas contiene las siguientes tareas:
+\begin{enumerate}
+	\setcounter{enumi}{-1}
+	\item TaskBatch 10 8
+	\item TaskBatch 10 4
+	\item TaskBatch 10 4
+	\item @4:TaskBatch 10 8
+	\item @6:TaskBatch 10 2
+\end{enumerate}
 
-Lote:
+\newpage
+\begin{figure}[H]
+	\includegraphics[scale=0.49]{ej7/ej7_1_6.png}
+	\caption{Diagrama de Gantt para el caso de 1 núcleo y 6 de quantum.}
+\end{figure}
 
-TaskBatch 10, 10
-TaskBatch 10, 4
-TaskBatch 10, 6
-@4:
-TaskBatch 10, 3
-@6:
-TaskBatch 10, 8
+\begin{center}
+  \begin{tabular}{ |l | c | c | c | c| c|c|}
+    \hline
+    Tareas    & Tarea 0 & Tarea 1 & Tarea 2 & Tarea 3 & Tarea 4 & Total CPU  \\ \hline
+    Quantum=1 & 10      & 10      & 10      & 10      &  10 & 110       \\ \hline
+    Quantum=4 & 12,5    & 12,5    & 12,5    & 12,5    &  12,5 & 88        \\ \hline
+    Quantum=6 & 12,64   & 12,64   & 12,64   & 12,64   &  12,64 & 87        \\ \hline
+  \end{tabular} \\ \vspace{10pt} 
+  Uso de CPU con un sólo núcleo (en porcentaje). El cambio de contexto para valores de quantum bajo utiliza mucho del procesador. Cuando el quantum es 1(uno), el procesador está 60\% haciendo tareas de mantenimiento. Esto ya fue observado anteriormente en este informe.
+\end{center}
 
-% ./simusched aa_lote.tsk 1 1 2 SchedRR 1
-% ./simusched aa_lote.tsk 1 1 2 SchedRR 4
-% ./simusched aa_lote.tsk 1 1 2 SchedRR 6
+\begin{figure}[H]
+	\includegraphics[scale=0.49]{ej7/ej7_2_4.png}
+	\caption{Diagrama de Gantt para el caso de 2 núcleos y 4 de quantum.}
+\end{figure}
+
+\begin{center}
+  \begin{tabular}{ |l | c | c | c | c| c | c|}
+    \hline
+    Tareas    & Tarea 0 & Tarea 1 & Tarea 2 & Tarea 3 & Tarea 4 & Total CPU  \\ \hline
+    Quantum=1 & 16,67      & 16,67      & 16,67      & 16,67      & 16,7 &  66       \\ \hline
+    Quantum=4 & 16    & 16    & 16    & 16    &  16 & 69        \\ \hline
+    Quantum=6 & 16   & 16   & 16   & 16   &  16 & 69        \\ \hline
+  \end{tabular} \\ \vspace{10pt} 
+  Uso de CPU con un 2(dos) núcleos (en porcentaje).
+\end{center}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.49]{ej7/ej7_4_1.png}
+	\caption{Diagrama de Gantt para el caso de 4 núcleos y 1 de quantum. Veamos que al aumentar la cantidad de núcleos aumenta el rendimiento de los núcleos, ya que casi siempre están ocupados. Es por esta razón también que la suma de porcentaje de uso de CPU da mayor a 100 porciento dado que en casi todos los momentos el procesador se encuentra ejecutando más de un proceso en simultáneo, y se duplica el rendimiento del uso de CPU.}
+\end{figure}
+
+\begin{center}
+  \begin{tabular}{ |l | c | c | c | c| c | c| }
+    \hline
+    Tareas    & Tarea 0 & Tarea 1 & Tarea 2 & Tarea 3 & Tarea 4 & Total CPU  \\ \hline
+    Quantum=1 & 23      & 23      & 23      & 23     & 23 &  47       \\ \hline
+    Quantum=4 & 23    & 23    & 23    & 23   & 23 &  47        \\ \hline
+    Quantum=6 & 23   & 23   & 23   & 23   & 23 &  47        \\ \hline
+  \end{tabular} \\ \vspace{10pt} 
+  Uso de CPU con un 4(cuatro) núcleos (en porcentaje). Observar que las llamadas bloqueantes son mucho menores al quantum, así que aumentar el quantum no tiene efecto.
+\end{center}
+
+Por lo tanto nuestra intuicón era correcta, el procesador se reparte de modo equitativa entre todas las tareas, y por lo tanto decimos que es $Round-Robin$ es un algoritmo de $schedulling$ justo o ecuánime.
 % 
-% ./simusched aa_lote.tsk 2 1 2 SchedRR 1 1
-% ./simusched aa_lote.tsk 2 1 2 SchedRR 1 3
-% ./simusched aa_lote.tsk 2 1 2 SchedRR 4 2
-% ./simusched aa_lote.tsk 2 1 2 SchedRR 4 5
+% \subsubsection{Turn-around time}
 % 
-% ./simusched aa_lote.tsk 4 1 2 SchedRR 2 2 2 3
-% ./simusched aa_lote.tsk 4 1 2 SchedRR 4 4 6 6
-% ./simusched aa_lote.tsk 4 1 2 SchedRR 6 6 6 6
-
-\subsubsection{Turn-around time}
-
-$Turn-around$ $time$ se define como el tiempo que tarda un proceso en terminar desde que est\'a listo para ejecutarse. Si un proceso se ejecuta desde el principio, entonces el n\'umero coinicide con tiempo total que tard\'o en terminar. Notemos que este tiempo no puede ser menor al tiempo total de ejecuci\'on; no tiene sentido que una tarea termine antes de ejecutar todo lo que deb\'ia ejecutar. Podemos medir entonces el $turn-around$ $time$ como la diferencia entre el tiempo de finalización y el tiempo de carga en el sistema. 
+% $Turn-around$ $time$ se define como el tiempo que tarda un proceso en terminar desde que est\'a listo para ejecutarse. Si un proceso se ejecuta desde el principio, entonces el n\'umero coinicide con tiempo total que tard\'o en terminar. Notemos que este tiempo no puede ser menor al tiempo total de ejecuci\'on; no tiene sentido que una tarea termine antes de ejecutar todo lo que deb\'ia ejecutar. Podemos medir entonces el $turn-around$ $time$ como la diferencia entre el tiempo de finalización y el tiempo de carga en el sistema. 
+% 
+% Ahora intuimos que 
 
 % \paragraph{FCFS}
 % 
@@ -84,4 +120,46 @@ $Turn-around$ $time$ se define como el tiempo que tarda un proceso en terminar d
 
 \subsubsection{Response time}
 
-Otra métrica conocida es la del $Response$ $time$ o tiempo de respuesta, que se define como el tiempo que tarda una tarea en devolver datos después de una llamada bloqueante para acceder a recursos de entrada y salida. Esta medida también es conocida como latencia e impacta directamente sobre la experiencia del usuario. Una latencia elevada da la impresión al usuario de que el sistema anda lento o se cuelga. Es una métrica principalmente aplicable a las tareas interactivas, ya que realizan varias de estas llamadas.
+Otra métrica conocida es la del $Response$ $time$ o tiempo de respuesta, que se define como el tiempo que tarda una tarea en devolver datos después de una llamada bloqueante para acceder a recursos de entrada y salida. Esta medida también es conocida como latencia e impacta directamente sobre la experiencia del usuario. Una latencia elevada da la impresión al usuario de que el sistema anda lento o se cuelga. Es una métrica principalmente aplicable a las tareas interactivas, ya que realizan varias de estas llamadas. Veamos que $Round-Robin$ puede no ser algoritmo con buen $response$ $time$, ya que este depende de la cantidad de tareas que se estén ejecutando en un mismo momento.
+
+Como las tareas del tipo TaskBatch realizan varias llamadas bloqueantes, entonces hay varios valores de $response$ $time$. Por lo tanto, haremos el promedio con todos ellos. Veamos nuevamente los gráficos.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.49]{ej7/ej7_2_4.png}
+	\caption{Diagrama de Gantt para el caso de 2 núcleos y 4 de quantum. El espacio verde entre el hilo de ejecución de una tarea es el $response$ $time$, así que visualmente nos podemos dar una idea de sus valores.}
+\end{figure}
+
+\begin{center}
+  \begin{tabular}{ |l | c | c | }
+    \hline
+    Tareas    & $Response$ $times$ & $Response$ $time$ promedio  \\ \hline
+    Tarea 0 & [5, 8, 10, 12, 3, 5, 2, 2] & 5.875 \\ \hline
+    Tarea 1 & [8, 10, 12, 7]    & 9.25       \\ \hline
+    Tarea 2 & [8, 10, 12, 7]   & 9.25        \\ \hline
+    Tarea 3 & [11, 12, 10, 7, 2, 2, 4, 2]  & 6,25          \\ \hline
+    Tarea 4 & [9, 9]   & 9          \\ \hline
+  \end{tabular} \\ \vspace{10pt} 
+	Los valores de $response$ $time$ del lote de tareas. Nótese que al principo el sistema tiene muchos procesos por ejecutar, y eso hace que el $response$ $time$ sea bastante mayor durante ese tiempo, y esto se reduce al final, cuando algunas tareas ya terminaron su ejecución.
+\end{center}
+
+El problema principal de $Round-Robin$ con respecto al $response$ $time$ es su implementación de cola de procesos; una tarea que realiza una llamada bloqueante debe esperar que le toque vuelva a tocar usar el procesador. Si hay muchas tareas entonces el proceso tardará mucho en devolver resultados al usuario, y dará la apariencia de "cuelgue" de sistema.  
+
+\begin{figure}[H]
+	\includegraphics[scale=0.49]{ej7/ej7_4_4.png}
+	\caption{Diagrama de Gantt para el caso de 4 núcleos y 4 de quantum.}
+\end{figure}
+
+\begin{center}
+  \begin{tabular}{ |l | c | c | }
+    \hline
+    Tareas    & $Response$ $times$ & $Response$ $time$ promedio  \\ \hline
+    Tarea 0 & [2, 4, 2, 4, 4, 4, 2, 2] & 3 \\ \hline
+    Tarea 1 & [4, 4, 4, 6]    & 4.5       \\ \hline
+    Tarea 2 & [4, 5, 4, 4]   & 4.25        \\ \hline
+    Tarea 3 & [6, 5, 4, 4, 4, 4, 2, 2]  & 3.875          \\ \hline
+    Tarea 4 & [4, 6]   & 5.0          \\ \hline
+  \end{tabular} \\ \vspace{10pt} 
+	Como se puede observar, aumentar la cantidad de núcleos contribuye a reducir los $response$ $times$ porque paraleliza los hilos de ejecución y los procesos pueden ser levantados por otro núcleo para continuar con su trabajo. Esto no es gratis, se debe pagar un costo de migración de núcleo, pero al fin y al cabo ese gasto es totalmente justificado.
+\end{center}
+
+Conlcuimos entonces que si bien en principio $Round-Robin$ no tiene un buen rendimiento en lo que respecta a $response$ $time$, si se disponen de varios núcleos entonces se comporta muchísimo mejor.
