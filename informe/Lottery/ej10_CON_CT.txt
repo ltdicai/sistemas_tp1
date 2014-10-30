@@ -2,19 +2,19 @@ Cycle: 10
 Task 0:
 	Time CPU: 3
 Task 1:
-	Time CPU: 5
+	Time CPU: 4
 Task Idle:
 	Time CPU: 0
 Cycle: 20
 Task 0:
-	Time CPU: 7
+	Time CPU: 6
 Task 1:
 	Time CPU: 8
 Task Idle:
 	Time CPU: 0
 Cycle: 30
 Task 0:
-	Time CPU: 11
+	Time CPU: 10
 Task 1:
 	Time CPU: 12
 Task Idle:
@@ -23,33 +23,47 @@ Cycle: 40
 Task 0:
 	Time CPU: 15
 Task 1:
-	Time CPU: 15
+	Time CPU: 14
+Task Idle:
+	Time CPU: 0
+Cycle: 50
+Task 0:
+	Time CPU: 18
+Task 1:
+	Time CPU: 19
 Task Idle:
 	Time CPU: 0
 Cycle: 60
 Task 0:
 	Time CPU: 21
 Task 1:
-	Time CPU: 25
+	Time CPU: 24
 Task Idle:
 	Time CPU: 0
 Cycle: 70
 Task 0:
 	Time CPU: 24
 Task 1:
-	Time CPU: 30
+	Time CPU: 29
+Task Idle:
+	Time CPU: 0
+Cycle: 80
+Task 0:
+	Time CPU: 27
+Task 1:
+	Time CPU: 34
 Task Idle:
 	Time CPU: 0
 Cycle: 90
 Task 0:
-	Time CPU: 31
+	Time CPU: 30
 Task 1:
 	Time CPU: 38
 Task Idle:
 	Time CPU: 0
 Cycle: 100
 Task 0:
-	Time CPU: 36
+	Time CPU: 35
 Task 1:
 	Time CPU: 41
 Task Idle:
@@ -58,25 +72,26 @@ Cycle: 110
 Task 0:
 	Time CPU: 39
 Task 1:
-	Time CPU: 45
+	Time CPU: 44
 Task Idle:
 	Time CPU: 0
 Cycle: 120
 Task 0:
-	Time CPU: 44
+	Time CPU: 43
 Task 1:
 	Time CPU: 47
 Task Idle:
 	Time CPU: 0
 Cycle: 130
 Task 0:
-	Time CPU: 48
+	Time CPU: 47
 Task 1:
 	Time CPU: 51
 Task Idle:
 	Time CPU: 0
 Total CPU time: 134
 Task 0:
+CPU/ciclo: 3 & 6 & 10 & 15 & 18 & 21 & 24 & 27 & 30 & 35 & 39 & 43 & 47 & 
 	Time CPU: 51
 	Time CPU(%): 38.0597014925
 	Turn-around: 134
@@ -84,6 +99,7 @@ Task 0:
 	Response times: []
 	Response times(AVG): -1
 Task 1:
+CPU/ciclo: 4 & 8 & 12 & 14 & 19 & 24 & 29 & 34 & 38 & 41 & 44 & 47 & 51 & 
 	Time CPU: 51
 	Time CPU(%): 38.0597014925
 	Turn-around: 127
@@ -91,6 +107,7 @@ Task 1:
 	Response times: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 	Response times(AVG): 5.0
 Task Idle:
+CPU/ciclo: 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 
 	Time CPU: 1
 	Time CPU(%): 0.746268656716
 	Turn-around: 0

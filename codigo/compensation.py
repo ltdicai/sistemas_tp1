@@ -58,11 +58,23 @@ def main(argv):
 	tasks = {-1:Task(0)}
 	line_n = 0
 	last_exit = 0;
+	cpuPerCicleTask = {-1: "", 0: "", 1: ""}
 	for line in fin:
 		line_n += 1
 		words = line.split()
 		# Extraer primera palabra
 		command = words.pop(0) 
+		if command != "#" and command != "UNBLOCK":
+			cycle = int(words[0]) 
+			if cycle % 10 == 0 and cycle != 0:
+				print "Cycle: {}".format(cycle)
+				for oid, value in tasks.iteritems():
+					cpuPerCicleTask[oid] += "{} & ".format(value.cpu_time)
+					taskname = oid
+					if taskname == -1:
+						taskname = "Idle"
+					print "Task {}:".format(taskname)
+					print "\tTime CPU: {}".format(value.cpu_time)
 		if command == "#":
 			pass
 		elif command == "LOAD":
@@ -79,15 +91,6 @@ def main(argv):
 				 tasks[task].response(cycle)
 			#if task != -1:
 			tasks[task].cpu_time += 1
-			
-			if cycle % 10 == 0:
-				print "Cycle: {}".format(cycle)
-				for oid, value in tasks.iteritems():
-					taskname = oid
-					if taskname == -1:
-						taskname = "Idle"
-					print "Task {}:".format(taskname)
-					print "\tTime CPU: {}".format(value.cpu_time)
 
 		elif command == "BLOCK":
 			# En el ciclo cycle la tarea task esta bloqueada
@@ -123,6 +126,7 @@ def main(argv):
 		if taskname == -1:
 			taskname = "Idle"
 		print "Task {}:".format(taskname)
+		print "CPU/ciclo: {}".format(cpuPerCicleTask[oid])
 		print "\tTime CPU: {}".format(value.cpu_time)
 
 		print "\tTime CPU(%): {}".format(100*(value.cpu_time/total_cpu))

@@ -52,30 +52,48 @@ previamente mencionado sobre la asignación de CPU esperada entre tareas bloquea
 Para esto ejecutamos dos tareas, una taskBatch, ya que el problema se manifiesta cuando existen llamadas bloqueantes, y la otra taskCPU.\\
 
 Al comienzo cada tarea posee 10 tickets (misma probabilidad de ganar) porque queremos que se ejecuten equitativamente.\\
+Para mostrar que efectivamente hay una mejora en la distribución del CPU presentamos los datos mediante tablas, donde cada columna pertenece a un ciclo en particular 
+y cada fila a una tarea.\\
+Ej: La posición de la tabla fila x, columna y: tiene la cantidad de CPU utilizada por la tarea x hasta el ciclo y.\\
 
-\paragraoh{SchedLottery sin CT:}
+\begin{flushleft}
+\textbf{SchedLottery sin CT:}\end{flushleft} %-------------------------------------------------------------------------------------------------------------
 
-TaskCPU:
-\begin{itemize}
- \item CPU time: 51
- \item Response time etc etc 			$ COMPLETAAAAAAAAAAAAAAAR  $    %COMPLETAR!!!!
-\end{itemize}
+\begin{center}
+ \includegraphics[scale=0.48]{./Lottery/ej10_SIN_CT.png}
+\end{center}
 
-TaskBatch:
-\begin{itemize}
- \item CPU total:
-\end{itemize}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Ciclo & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 & 110 & 120 & 130 & 137\\
+\hline
+\hline
+Tarea 0 (CPU) & 3 & 6 & 10 & 15 & 18 & 24 & 27 & 37 & 42 & 47 & 51 & - & - & - \\
+\hline
+Tarea 1 (Batch) & 4 & 8 & 12 & 14 & 19 & 21 & 25 & 25 & 27 & 31 & 34 & 41 & 46 & 51 \\
+\hline
+\end{tabular}\end{center}
 
-\paragraoh{SchedLottery con CT:}
+Hasta el ciclo 80 el CPU se mantiene relativamente distribuido. Luego la tarea 0 pasa a tener mayor proporción hasta que finaliza. 
+Si esto se proyecta en el tiempo entonces la brecha se vuelve cada vez más grande.
 
-TaskCPU:
-\begin{itemize}
- \item CPU total:
- \item Response time etc etc 			$ COMPLETAAAAAAAAAAAAAAAR  $    %COMPLETAR!!!!
-\end{itemize}
+\begin{flushleft}
+\textbf{SchedLottery con CT:}\end{flushleft} %--------------------------------------------------------------------------------------------------------------
 
-TaskBatch:
-\begin{itemize}
- \item CPU total:
-\end{itemize}
+\begin{center}
+ \includegraphics[scale=0.48]{./Lottery/ej10_CON_CT.png}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Ciclo & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 & 110 & 120 & 130 & 134 \\
+\hline
+\hline
+Tarea 0 (CPU) & 3 & 6 & 10 & 15 & 18 & 21 & 24 & 27 & 30 & 35 & 39 & 43 & 47 & 51\\
+\hline
+Tarea 1 (Batch) & 4 & 8 & 12 & 14 & 19 & 24 & 29 & 34 & 38 & 41 & 44 & 47 & 51 & -\\
+\hline
+\end{tabular}\end{center}
 

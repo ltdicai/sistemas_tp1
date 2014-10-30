@@ -77,7 +77,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			if(m == BLOCK){
 				quantumActualDeCpu[cpu]++;//Sumo 1 al quantum del cpu actual
 				//Agrego tickets compensatorios por no terminar el quantum
-				compensarTickets(cpu);
+				//compensarTickets(cpu);
 				tareasBloqueadas.insert(pair<int, Task>(tareaActualDeCpu[cpu].pid, tareaActualDeCpu[cpu])); 
 				//guardo <pid, Task> en tareas_bloqueadas
 
