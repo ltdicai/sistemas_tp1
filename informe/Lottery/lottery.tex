@@ -45,7 +45,7 @@ violando así la regla de 1:1 dónde todas deberían recibir la misma proporció
 
 La forma propuesta para contrarrestar este problema es Compensation Tickets. 
 Consiste en dar a la tarea bloqueada una cantidad de tickets en relación con el quantum no utilizado.
-Así, si sólo utilizó una fracción $f$ del quantum le son dados $cant\_inicial/f$ tickets.\\
+Así, si sólo utilizó una fracción $F$ del quantum le son dados $\frac{CANT\_INICIAL}{F}$ tickets.\\
 
 Queremos mostrar evidencia de que el sistema de compensation tickets (CT) corrige el problema
 previamente mencionado sobre la asignación de CPU esperada entre tareas bloqueantes y no bloqueantes.
@@ -76,7 +76,7 @@ Tarea 1 (Batch) & 4 & 8 & 12 & 14 & 19 & 21 & 25 & 25 & 27 & 31 & 34 & 41 & 46 &
 \end{tabular}\end{center}
 
 Hasta el ciclo 80 el CPU se mantiene relativamente distribuido. Luego la tarea 0 pasa a tener mayor proporción hasta que finaliza. 
-Si esto se proyecta en el tiempo entonces la brecha se vuelve cada vez más grande.
+Si esto se proyecta en el tiempo entonces la brecha se vuelve cada vez más grande. Rompiendo así con el 1:1 deseado.
 
 \begin{flushleft}
 \textbf{SchedLottery con CT:}\end{flushleft} %--------------------------------------------------------------------------------------------------------------
@@ -94,6 +94,28 @@ Ciclo & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 & 110 & 120 & 130 & 134
 Tarea 0 (CPU) & 3 & 6 & 10 & 15 & 18 & 21 & 24 & 27 & 30 & 35 & 39 & 43 & 47 & 51\\
 \hline
 Tarea 1 (Batch) & 4 & 8 & 12 & 14 & 19 & 24 & 29 & 34 & 38 & 41 & 44 & 47 & 51 & -\\
+\hline
+\end{tabular}\end{center}
+
+Ahora con CT vemos que la tarea 0 nunca toma la delantera en cuanto al CPU. Esto se debe a que la tarea 1 tiene más probabilidades de ganar, cada vez que no utiliza 
+todo su quantum esta probabilidad se hace más grande. Así si están las dos tareas esperando, es muy probable que la 1 sea la elegida para correr a continuación.
+Si esto se proyecta en el tiempo se continúa con la proporción 1:1. 
+
+Esto es un ejemplo de proyección en el tiempo:
+
+\begin{center}
+ \includegraphics[scale=0.48]{./Lottery/ej10_CON_CT_muchosciclos.png}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Ciclo & 30 & 60 & 90 & 120 & 150 & 180 & 210 & 240 & 252 & 264\\
+\hline
+\hline
+Tarea 0 (CPU) & 9 & 21 & 32 & 43 & 54 & 63 & 75 & 87 & 90 & 101\\
+\hline
+Tarea 1 (Batch) & 14 & 24 & 36 & 47 & 60 & 73 & 84 & 94 & 101 & -\\
 \hline
 \end{tabular}\end{center}
 

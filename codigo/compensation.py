@@ -66,7 +66,7 @@ def main(argv):
 		command = words.pop(0) 
 		if command != "#" and command != "UNBLOCK":
 			cycle = int(words[0]) 
-			if cycle % 10 == 0 and cycle != 0:
+			if (cycle % 30 == 0 or cycle == 151 or cycle == 252) and cycle != 0:
 				print "Cycle: {}".format(cycle)
 				for oid, value in tasks.iteritems():
 					cpuPerCicleTask[oid] += "{} & ".format(value.cpu_time)
