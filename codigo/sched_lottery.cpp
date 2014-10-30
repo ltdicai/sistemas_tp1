@@ -72,15 +72,16 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			///si no se le terminó el quantum a la tarea actual sigue ejecutando
 		}
 		else{ //BLOCK o EXIT
+			//Disminuyo la cantidad de tickets totales
+			totalTickets -= tareaActualDeCpu[cpu].cantTickets;
 			if(m == BLOCK){
+				quantumActualDeCpu[cpu]++;//Sumo 1 al quantum del cpu actual
 				//Agrego tickets compensatorios por no terminar el quantum
 				compensarTickets(cpu);
 				tareasBloqueadas.insert(pair<int, Task>(tareaActualDeCpu[cpu].pid, tareaActualDeCpu[cpu])); 
 				//guardo <pid, Task> en tareas_bloqueadas
 
 			}
-			//Disminuyo la cantidad de tickets totales
-			totalTickets -= tareaActualDeCpu[cpu].cantTickets;
 			quantumActualDeCpu[cpu] = 0; //vuelvo el quantum a cero
 			tareaActualDeCpu[cpu] = lottery(); //Hacemos la loteria
 		}
@@ -89,15 +90,23 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 }
 
 Task SchedLottery::lottery(){
+	// for debugging
+	// int i=0;
+	// while(i < readyTasks.size()){
+	// 	cout << "-------------------readyTasks[" << i << "] pid " << readyTasks[i].pid << " cantTickets " << readyTasks[i].cantTickets << endl;
+	// 	i++;
+	// }
+	
 	if(readyTasks.size() == 0){
 		return Task(IDLE_TASK, -1);
 	}
 	else{
 		double random = (double)rand();
 		random = random/RAND_MAX; //ahora random = numero entre 0 y 1
+		//cout << "-------------------totalTickets" << totalTickets << endl;
 		random = random*totalTickets;
 		int ticketDorado = floor(random);
-		//cout << "\tThe winning number is " << ticketDorado << endl;
+		//cout << "-------------------The winning number is " << ticketDorado << endl;
 		int sumaTickets = 0;
 		unsigned int it = 0;
 		//Itero la lista de tareas sumando los tickets
@@ -105,19 +114,26 @@ Task SchedLottery::lottery(){
 		//en ese caso ya se que la ultima es la ganadora
 		while(it < readyTasks.size()-1 && sumaTickets < ticketDorado){
 			sumaTickets += readyTasks[it].cantTickets;
+			if (sumaTickets > ticketDorado){
+				//entonces esta es la tarea ganadora
+				break;
+			}
 			it++; 
 		}
 		Task nueva = readyTasks[it];
 		readyTasks.erase(readyTasks.begin()+it);
-		cout << "# WINNER " << nueva.pid << endl;
+		//cout << "# WINNER " << nueva.pid << endl;
 		return nueva;
 	}
 }
 
 void SchedLottery::compensarTickets(int cpu){
-	double fraccionQuantum = quantumActualDeCpu[cpu]/quantumMaximo;
+	//quantumActualDeCpu[cpu] nunca es cero porque como minimo usan 1 cpu para pedir el bloqueo
+	double fraccionQuantum = double(quantumActualDeCpu[cpu])/double(quantumMaximo);
 	/*si consumio una fracción F del quantum
-	* la compensacion es de 1/F
+	* la compensacion es de CANT_TICKETS_INICIAL/F
 	*/
-	tareaActualDeCpu[cpu].cantTickets += floor(CANT_TICKETS_INICIAL/fraccionQuantum);
+	if (fraccionQuantum != 0 ){
+		tareaActualDeCpu[cpu].cantTickets += floor(CANT_TICKETS_INICIAL/fraccionQuantum);
+	}
 }

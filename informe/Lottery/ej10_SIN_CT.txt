@@ -1,0 +1,100 @@
+Cycle: 10
+Task 0:
+	Time CPU: 3
+Task 1:
+	Time CPU: 5
+Task Idle:
+	Time CPU: 0
+Cycle: 20
+Task 0:
+	Time CPU: 7
+Task 1:
+	Time CPU: 8
+Task Idle:
+	Time CPU: 0
+Cycle: 30
+Task 0:
+	Time CPU: 11
+Task 1:
+	Time CPU: 12
+Task Idle:
+	Time CPU: 0
+Cycle: 40
+Task 0:
+	Time CPU: 15
+Task 1:
+	Time CPU: 15
+Task Idle:
+	Time CPU: 0
+Cycle: 60
+Task 0:
+	Time CPU: 24
+Task 1:
+	Time CPU: 22
+Task Idle:
+	Time CPU: 0
+Cycle: 70
+Task 0:
+	Time CPU: 28
+Task 1:
+	Time CPU: 25
+Task Idle:
+	Time CPU: 0
+Cycle: 80
+Task 0:
+	Time CPU: 38
+Task 1:
+	Time CPU: 25
+Task Idle:
+	Time CPU: 0
+Cycle: 90
+Task 0:
+	Time CPU: 42
+Task 1:
+	Time CPU: 28
+Task Idle:
+	Time CPU: 0
+Cycle: 100
+Task 0:
+	Time CPU: 48
+Task 1:
+	Time CPU: 31
+Task Idle:
+	Time CPU: 0
+Cycle: 110
+Task 0:
+	Time CPU: 51
+Task 1:
+	Time CPU: 35
+Task Idle:
+	Time CPU: 0
+Cycle: 130
+Task 0:
+	Time CPU: 51
+Task 1:
+	Time CPU: 47
+Task Idle:
+	Time CPU: 4
+Total CPU time: 137
+Task 0:
+	Time CPU: 51
+	Time CPU(%): 37.2262773723
+	Turn-around: 109
+	Time IO: []
+	Response times: []
+	Response times(AVG): -1
+Task 1:
+	Time CPU: 51
+	Time CPU(%): 37.2262773723
+	Turn-around: 137
+	Time IO: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+	Response times: [5, 5, 5, 5, 5, 5, 8, 5, 8, 5, 2, 2, 2, 2, 2]
+	Response times(AVG): 4.4
+Task Idle:
+	Time CPU: 6
+	Time CPU(%): 4.3795620438
+	Turn-around: 0
+	Time IO: []
+	Response times: []
+	Response times(AVG): -1
+

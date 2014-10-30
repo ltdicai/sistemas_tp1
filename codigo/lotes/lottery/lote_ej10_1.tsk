@@ -1,2 +1,2 @@
-TaskCPU 35
-TaskConsola 5 2 5
+TaskCPU 50
+TaskBatch 50 15

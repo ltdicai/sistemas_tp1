@@ -32,3 +32,50 @@ Esto implica que el valor promedio de la cantidad de loter\'ias ganadas es direc
 \subsubsection{Fairness}
 
 \subsubsection{Compensation tickets}
+
+Queremos ver cómo se comporta el algoritmo ante un lote de tareas compuesto por
+tareas que sólo utilizan CPU y otras que realizan llamadas bloqueantes.\\
+
+Si SchedLottery no contara con compensation tickets entonces como se explica en el artículo \cite[Sec. 3.4]{SchedLottery} el problema se 
+ocasiona cuando una tarea se bloquea sin terminar de utilizar su quantum.
+De continuar así por varios ciclos entonces esa tarea usaría, en promedio, menos CPU que las demás
+(la probabilidad de ganar el sorteo es la misma para todas, pero en este caso habría tareas que
+usan más tiempo el CPU que las demás)
+violando así la regla de 1:1 dónde todas deberían recibir la misma proporción de CPU.\\
+
+La forma propuesta para contrarrestar este problema es Compensation Tickets. 
+Consiste en dar a la tarea bloqueada una cantidad de tickets en relación con el quantum no utilizado.
+Así, si sólo utilizó una fracción $f$ del quantum le son dados $cant\_inicial/f$ tickets.\\
+
+Queremos mostrar evidencia de que el sistema de compensation tickets (CT) corrige el problema
+previamente mencionado sobre la asignación de CPU esperada entre tareas bloqueantes y no bloqueantes.
+Para esto ejecutamos dos tareas, una taskBatch, ya que el problema se manifiesta cuando existen llamadas bloqueantes, y la otra taskCPU.\\
+
+Al comienzo cada tarea posee 10 tickets (misma probabilidad de ganar) porque queremos que se ejecuten equitativamente.\\
+
+\paragraoh{SchedLottery sin CT:}
+
+TaskCPU:
+\begin{itemize}
+ \item CPU time: 51
+ \item Response time etc etc 			$ COMPLETAAAAAAAAAAAAAAAR  $    %COMPLETAR!!!!
+\end{itemize}
+
+TaskBatch:
+\begin{itemize}
+ \item CPU total:
+\end{itemize}
+
+\paragraoh{SchedLottery con CT:}
+
+TaskCPU:
+\begin{itemize}
+ \item CPU total:
+ \item Response time etc etc 			$ COMPLETAAAAAAAAAAAAAAAR  $    %COMPLETAR!!!!
+\end{itemize}
+
+TaskBatch:
+\begin{itemize}
+ \item CPU total:
+\end{itemize}
+
