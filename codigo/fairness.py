@@ -11,8 +11,6 @@ class Task(object):
 		self.running_time = 0
 		self.blocked = False
 		self.last_block = -1
-		self.lotteries_won = 0
-		self.all_lotteries = []
 
 	def exit(self, cycle):
 		self.running_time = cycle - self.load_time
@@ -59,18 +57,32 @@ def main(argv):
 
 	tasks = {-1:Task(0)}
 	line_n = 0
-	last_exit = 0
+	last_exit = 0;
+	cpuPerCicleTask = {-1: {}, 0: {}, 1: {}}
+	total_simu = 0
 	for line in fin:
 		line_n += 1
 		words = line.split()
 		# Extraer primera palabra
 		command = words.pop(0) 
+		if command != "#" and command != "UNBLOCK":
+			cycle = int(words[0]) 
+			if (cycle % 10 == 0 or cycle == 21 or cycle == 51) and cycle != 0:
+				# print "-----------Cycle: {}-----------".format(cycle)
+				for oid, value in tasks.iteritems():
+					if cycle not in cpuPerCicleTask[oid]:
+						cpuPerCicleTask[oid][cycle] = 0
+					cpuPerCicleTask[oid][cycle] += value.cpu_time
+					# taskname = oid
+					# if taskname == -1:
+					# 	taskname = "Idle"
+					# print "Task {}:".format(taskname)
+					# print "\tTime CPU: {}".format(value.cpu_time)
 		if command == "#":
-			aux_command = words.pop(0)
-			if aux_command == "WINNER":
-				task = int(words.pop(0))
-				tasks[task].lotteries_won += 1
-			elif aux_command == "SETTINGS":
+			if words[0] == "SETTINGS":
+				total_simu+= 1
+				#reinicio para el nuevo simulador
+				tasks = {-1:Task(0)}
 
 		elif command == "LOAD":
 			# Cargo nueva tarea
@@ -115,23 +127,31 @@ def main(argv):
 		#	sys.stderr.write("Skip line {} '{}'".format(line_n, line))
 
 	print "Total CPU time:", last_exit
-	total_cpu = float(last_exit)
+	# total_cpu = float(last_exit)
 	for oid, value in tasks.iteritems():
-		taskname = oid
-		if taskname == -1:
-			taskname = "Idle"
-		print "Task {}:".format(taskname)
-		print "\tTime CPU: {}".format(value.cpu_time)
+		if oid != -1:
+			taskname = oid
+			ciclos = ""
+			cpuPorCiclo = ""
+			for key in sorted(cpuPerCicleTask[oid]):
+				ciclos += "{} & ".format(key)
+				#divido por la cant de simulaciones
+				cpuPerCicleTask[oid][key] /= total_simu
+				cpuPorCiclo += "{} & ".format(cpuPerCicleTask[oid][key])
+			if oid == 0:
+				print "\n Ciclo & " + ciclos
+			print "\n Tarea {} & ".format(taskname) + cpuPorCiclo
+		# print "\tTime CPU: {}".format(value.cpu_time)
 
-		print "\tTime CPU(%): {}".format(100*(value.cpu_time/total_cpu))
-		print "\tTurn-around: {}".format(value.running_time)
-		print "\tTime IO: {}".format(value.blocked_list)
-		print "\tResponse times: {}".format(value.response_times)
-		if value.response_times:
-			response_time_avg = sum(value.response_times)/float(len(value.response_times))
-		else:
-			response_time_avg = -1
-		print "\tResponse times(AVG): {}".format(response_time_avg)
+		# print "\tTime CPU(%): {}".format(100*(value.cpu_time/total_cpu))
+		# print "\tTurn-around: {}".format(value.running_time)
+		# print "\tTime IO: {}".format(value.blocked_list)
+		# print "\tResponse times: {}".format(value.response_times)
+		# if value.response_times:
+		# 	response_time_avg = sum(value.response_times)/float(len(value.response_times))
+		# else:
+		# 	response_time_avg = -1
+		# print "\tResponse times(AVG): {}".format(response_time_avg)
 
 		
 

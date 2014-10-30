@@ -31,6 +31,54 @@ Esto implica que el valor promedio de la cantidad de loter\'ias ganadas es direc
 
 \subsubsection{Fairness}
 
+Para medir la ecuanimidad del algoritmo del scheduler, diseñamos un experimento que analiza los ciclos consumidos por cada tarea
+por intervalos a lo largo del tiempo.
+El SchedLottery que implementamos tiene como objetivo otorgar el mismo tiempo de uso de CPU para todas las tareas, es decir que si pongo a correr dos tareas ambas se 
+ejecuten una cantidad de tiempo muy similar (relación 1:1).\\
+Entonces si nuestra implementación cumple la ecuanimidad, deberíamos observar que a medida que avanza la ejecución, los tiempos de CPU de cada tarea coinciden en un mismo valor o
+uno muy cercano.\\
+
+Realizamos la prueba con una TaskBatch y una TaskCPU, realizando 1000 ejecuciones:\\
+
+\begin{flushleft}
+\textbf{SchedLottery:}\end{flushleft}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Ciclo & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 & 110 & 120 & 130 & 140 \\ 
+\hline
+\hline
+Tarea 0 (CPU) & 3 & 8 & 11 & 15 & 18 & 22 & 25 & 28 & 31 & 35 & 39 & 44 & 49 & 51 \\
+\hline
+Tarea 1 (Batch) & 2 & 5 & 7 & 11 & 14 & 17 & 21 & 24 & 27 & 30 & 34 & 40 & 47 & 51 \\ 
+\hline
+\end{tabular}\end{center}
+
+Se puede observar que los valores mantienen el mismo grado de magnitud a lo largo de la ejecución.
+A continuación evaluamos las mismas tareas bajo un scheduler Round-Robin, que por definición es un algoritmo
+que posee mucha ecuanimidad, con el que podremos comparar nuestros resultados previos.\\
+
+\begin{flushleft}
+\textbf{Round-robin:}\end{flushleft}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Ciclo & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 & 110 & 120 & 130 & 140 & 146 \\ 
+\hline
+\hline
+Tarea 0 (CPU) & 4 & 9 & 12 & 16 & 21 & 24 & 28 & 33 & 38 & 42 & 45 & 50 & 51 & - & -\\
+\hline
+Tarea 1 (Batch) & 3 & 6 & 10 & 13 & 16 & 20 & 23 & 25 & 27 & 30 & 34 & 37 & 41 & 47 & 51\\ 
+\hline
+\end{tabular}\end{center}
+
+Como se puede apreciar la brecha de utilización de CPU para RR crece en favor de la TaskCPU, ésto se debe
+a que no posee un sistema para compensar cuando tenemos tareas que se bloquean y otras que no, como si posee
+el SchedLottery (ver sección Compensation Tickets).\\
+
+Dado los resultados de los experimentos pudimos mostrar que el SchedLottery no se inclina en favor de ninguna de las tareas, distribuyendo el uso del CPU
+uniformemente cumpliendo con la definición de fairness.
+
 \subsubsection{Compensation tickets}
 
 Queremos ver cómo se comporta el algoritmo ante un lote de tareas compuesto por
@@ -57,7 +105,7 @@ y cada fila a una tarea.\\
 Ej: La posición de la tabla fila x, columna y: tiene la cantidad de CPU utilizada por la tarea x hasta el ciclo y.\\
 
 \begin{flushleft}
-\textbf{SchedLottery sin CT:}\end{flushleft} %-------------------------------------------------------------------------------------------------------------
+\textbf{SchedLottery SIN CT:}\end{flushleft} %-------------------------------------------------------------------------------------------------------------
 
 \begin{center}
  \includegraphics[scale=0.48]{./Lottery/ej10_SIN_CT.png}
@@ -79,7 +127,7 @@ Hasta el ciclo 80 el CPU se mantiene relativamente distribuido. Luego la tarea 0
 Si esto se proyecta en el tiempo entonces la brecha se vuelve cada vez más grande. Rompiendo así con el 1:1 deseado.
 
 \begin{flushleft}
-\textbf{SchedLottery con CT:}\end{flushleft} %--------------------------------------------------------------------------------------------------------------
+\textbf{SchedLottery CON CT:}\end{flushleft} %--------------------------------------------------------------------------------------------------------------
 
 \begin{center}
  \includegraphics[scale=0.48]{./Lottery/ej10_CON_CT.png}
