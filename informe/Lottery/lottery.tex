@@ -1,12 +1,12 @@
 \subsection{Lottery Scheduling}
 
-La idea detr\'as de $lottery$ $scheduling$\cite{SchedLottery} es aplicar un enfoque probabil\'istico y pseudoaleatorio a la hora de asignar recursos a las tareas. Para lograr esto se utiliza un sistema de $tickets$ que representan derechos de acceso a recursos; las tareas poseen una cantidad determinada de $tickets$, puediendo ser distinta de una tarea a otra y cada vez que el $scheduler$ decide a qu\'e tarea otorgar los recursos lo hace mediante una loter\'ia, elige uno entre todos los $tickets$ del sistema. El proceso que tenga ese $ticket$ ser\'a el ganador y se le asignar\'a el recurso que est\'a demandado.
+La idea detr\'as de $lottery$ $scheduling$\cite{SchedLottery} es aplicar un enfoque probabil\'istico y pseudoaleatorio a la hora de asignar recursos a las tareas. Para lograr esto se utiliza un sistema de $tickets$ que representan derechos de acceso a recursos; las tareas poseen una cantidad determinada de $tickets$, pudiendo ser distinta de una tarea a otra y cada vez que el $scheduler$ decide a qu\'e tarea otorgar los recursos lo hace mediante una loter\'ia, elige uno entre todos los $tickets$ del sistema. El proceso que tenga ese $ticket$ ser\'a el ganador y se le asignar\'a el recurso que est\'a demandado.
 
 Los $tickets$ son una forma de cuantificar los derechos de acceso a recursos; cuantos m\'as $tickets$ tenga una tarea, m\'as probable es que gane la loter\'ia. Tambi\'en permiten homogeneizar los diferentes tipos de recursos ya que todos son representados por los mismos tipos de $tickets$, esto aporta flexibilidad a la hora de asignarlos.
 
 \subsubsection{Loter\'ias}
 
-En cada $tick$ del reloj, el $scheduler$ toma una decisi\'on: si el proceso en ejecuci\'on agot\'o todo su quantum asignado, realiz\'o una llamada bloqueante o simplemente termin\'o exitosamente entonces se lleva a cabo una loter\'ia. Est\'a loter\'ia decide qui\'en va a ser el pr\'oximo proceso en utilizar el recurso deseado. Elegir el $ticket$ ganador se realiza mediante un algoritmo pseudoaleatorio que lo elige de manera uniforme, esto es, todos los tickets tienen una probabilidad igual de ganar la loter\'ia, a saber:
+En cada $tick$ del reloj, el $scheduler$ toma una decisi\'on: si el proceso en ejecuci\'on agot\'o todo su quantum asignado, realiz\'o una llamada bloqueante o simplemente termin\'o exitosamente entonces se lleva a cabo una loter\'ia. Esta loter\'ia decide qui\'en va a ser el pr\'oximo proceso en utilizar el recurso deseado. Elegir el $ticket$ ganador se realiza mediante un algoritmo pseudoaleatorio que lo elige de manera uniforme, esto es, todos los tickets tienen una probabilidad igual de ganar la loter\'ia, a saber:
 
 Sea $n$ la cantidad de $tickets$ y \{t$_i$\}$_{1 \leq i \leq n}$ el conjunto de ellos.
 
